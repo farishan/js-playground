@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Queue</title>
+</head>
+
+<body>
+    <p>check console</p>
+    <iframe src="./Queue.js" style="width: 100%; height: 600px;"></iframe>
+
+    <script src="./Queue.js"></script>
+    <script>
+        const queue = new Queue()
+        console.log(queue)
+        console.log(`${queue}`)
+        queue.dequeue()
+        console.log(`${queue}`)
+        queue.enqueue('1')
+        console.log(`${queue}`)
+        queue.enqueue('2')
+        console.log(`${queue}`)
+        queue.enqueue('3')
+        console.log(`${queue}`)
+        queue.dequeue()
+        console.log(`${queue}`)
+        queue.enqueue('1')
+        console.log(`${queue}`)
+        queue.dequeue()
+        console.log(`${queue}`)
+        queue.dequeue()
+        console.log(`${queue}`)
+        queue.dequeue()
+        console.log(`${queue}`)
+        queue.dequeue()
+        console.log(`${queue}`)
+    </script>
+</body>
+
+</html>
