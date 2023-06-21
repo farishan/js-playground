@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script src="./BitHolder.js"></script>
+    <script src="./Emitter.js"></script>
+    <script src="./Receiver.js"></script>
+    <script>
+        const bitHolder = new BitHolder(0)
+
+        const valueDisplay = document.createElement('p')
+        valueDisplay.innerHTML = bitHolder.get()
+        document.body.append(valueDisplay)
+
+        const emitter = new Emitter()
+        const receiver = new Receiver()
+
+        emitter.onEmit = function(data) {
+            console.log('emitting: ', data)
+            receiver.receive(data)
+        }
+
+        emitter.emit(1)
+        emitter.emit(0)
+        emitter.emit(1)
+
+        const input = new Emitter()
+        const output = new Receiver()
+        input.onEmit = function(data) {
+            output.receive(data)
+        }
+
+        /* render input */
+        const isOn = document.createElement('p')
+        isOn.innerHTML = `input is on: false`
+        const turnOn = document.createElement('button')
+        turnOn.innerHTML = 'turn on'
+        turnOn.onclick = function() {
+            input.emit(1)
+        }
+
+        const turnOff = document.createElement('button')
+        turnOff.innerHTML = 'turn off'
+        turnOff.onclick = function() {
+            input.emit(0)
+        }
+
+        document.body.append(turnOn)
+        document.body.append(turnOff)
+    </script>
+</body>
+
+</html>
