@@ -1,0 +1,17 @@
+{
+  "name": "js-event-manager",
+  "version": "0.1.0",
+  "description": "An event manager",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "npx rollup -c --compact && npx rollup -c example/rollup.config.js"
+  },
+  "keywords": [],
+  "author": "Faris Han",
+  "license": "ISC",
+  "devDependencies": {
+    "rollup": "^3.10.0"
+  }
+}
