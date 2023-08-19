@@ -1,0 +1,20 @@
+{
+  "name": "window-event-proxy",
+  "version": "0.1.0",
+  "description": "My browser game needs to add event listener to `window` object, and needs to monitor all listener key and value.",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "npx rollup --config --compact",
+    "build-example": "npx rollup --config example/rollup.config.js --sourcemap"
+  },
+  "keywords": ["window", "event", "proxy"],
+  "author": "Faris Han",
+  "license": "ISC",
+  "devDependencies": {
+    "@lopatnov/rollup-plugin-uglify": "^2.1.5",
+    "rollup": "^3.9.0",
+    "terser": "^5.16.1"
+  }
+}
