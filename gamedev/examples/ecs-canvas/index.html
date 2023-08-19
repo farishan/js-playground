@@ -1,0 +1,30 @@
+<script src="../../../lib/el.js"></script>
+<script data-main="main" src="../../../lib/require.js"></script>
+
+<h1>Canvas - ECS</h1>
+
+<p>Entity needs to have "canvas-renderable" component to be drawn in a canvas.</p>
+<p>Simplest form: Rectangle</p>
+<p>Rectangle is an entity that contain these properties:</p>
+<ul>
+  <li>
+    x position
+  </li>
+  <li>
+    y position
+  </li>
+  <li>
+    width
+  </li>
+  <li>
+    height
+  </li>
+  <li>
+    [optional] color
+  </li>
+</ul>
+
+<div style="display:flex">
+  <canvas id="canvas" style="border:1px solid"></canvas>
+  <div id="monitor"></div>
+</div>

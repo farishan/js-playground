@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Features - Tileset | Faris Han</title>
+  <link rel="stylesheet" href="../../global.css">
+  <style>
+    canvas {
+      width: 100%;
+      background: lightgray;
+      image-rendering: -moz-crisp-edges;
+      image-rendering: -webkit-crisp-edges;
+      image-rendering: pixelated;
+      image-rendering: crisp-edges;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container bg-light p-4">
+    <nav>
+      <button onclick="window.history.back()">Back</button>
+      <a href="../../index.html">Back to Index</a>
+    </nav>
+
+    <h1>Features - Tileset</h1>
+
+    <p>The complete set of tiles available for use in a playing area is called a <a
+        href="https://en.wikipedia.org/wiki/Tile-based_video_game" target="_blank"
+        title="external link to wikipedia.org"><em>tileset</em> &nearr;</a>.</p>
+    <p><a href="https://discourse.mapeditor.org/t/difference-between-sprite-sheets-and-tiledmaps-tmx-tsx-files/4464"
+        target="_blank">Difference between Tileset and Spritesheet &nearr;</a></p>
+
+    <h2>Tools:</h2>
+    <ol>
+      <li>
+        Image editor.<br>I use <a href="https://graphicsgale.com/us/" target="_blank">https://graphicsgale.com/us/</a>
+      </li>
+    </ol>
+
+    <h2 id="output">Output:</h2>
+    <ol>
+      <li>
+        Tileset (reusable tiles in a <code>.png</code> image).
+        <div>
+
+          Example:
+          <ul>
+            <li>Tile size: <code>4px</code></li>
+            <li>Row length: <code>2</code></li>
+            <li>Column length: <code>2</code></li>
+            <li>Gap between tiles: <code>1px</code></li>
+            <li>
+              Result: <code>9px * 9px</code> tileset: <img src="./tilesets/tileset1/tileset1.png">
+            </li>
+            <li>Zoomed 10x:<br>
+              <img src="./tilesets/tileset1/tileset1.png" width="90px" height="90px"
+                style="image-rendering: pixelated;">
+            </li>
+          </ul>
+        </div>
+      </li>
+    </ol>
+    <p>
+      Used in <a href="../tilemap/index.html">Tilemap</a>
+    </p>
+
+    <h3>Constructor:</h3>
+    <details>
+      <summary>Click to expand</summary>
+      <iframe src="./Tileset.js" frameborder="0" width="100%" height="550px"
+        style="border: 1px solid; padding: 4px"></iframe>
+    </details>
+
+    <p>Constructor usage example with canvas rendering:</p>
+    <table style="width: 100%; border: 1px solid; padding: 4px">
+      <tbody>
+        <tr>
+          <td style="vertical-align: top">
+            <iframe src="../../examples/tileset-and-canvas/index.html" frameborder="0" width="100%"
+              height="550px"></iframe>
+          </td>
+          <td>
+            <iframe src="../../examples/tileset-and-canvas/main.js" frameborder="0" width="100%"
+              height="550px"></iframe>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Gallery</h3>
+    <img src="./tilesets/5x5/5x5-tileset.png" alt="5x5 tileset" style="width:100%; image-rendering: pixelated">
+
+    <a href="#" class="back-to-top">Back to top</a>
+  </div>
+
+  <script src="./Tileset.js"></script>
+  <script src="./main.js"></script>
+</body>
+
+</html>

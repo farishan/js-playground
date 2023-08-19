@@ -1,0 +1,70 @@
+<link rel="stylesheet" href="./main.css">
+<script src="../../../lib/el.js"></script>
+<script data-main="system" src="../../../lib/require.js"></script>
+
+<a href="./index.html">ECS Playground</a>
+<h1>System Playground</h1>
+
+<div style="display: flex;">
+  <pre style="border: 1px solid; padding: 0 20px 0 10px; margin-right: 10px;">
+    <h2 style="margin-bottom: 0;">World Monitor</h2>
+    <div id="monitor"></div>
+  </pre>
+  <div>
+    <section>
+      <h2>System</h2>
+      <details>
+        <summary><code>move system</code></summary>
+        <pre>
+          <code>
+            ecs.addSystem('move', function (entity) {
+              if (!entity.distance && entity.distance !== null) return;
+
+              if (entity.shouldMove) {
+                if (entity.distance === null) entity.distance = 0;
+
+                entity.distance++;
+              }
+            });
+          </code>
+        </pre>
+      </details>
+      <details>
+        <summary><code>randomMove system</code></summary>
+        <pre>
+          <code>
+            ecs.addSystem('randomMove', function (entity) {
+              console.log('random moving...', entity);
+
+              if (entity.x === null) {
+                entity.x = 1;
+              }
+
+              if (entity.y === null) {
+                entity.y = 1;
+              }
+
+              if (!entity.x || !entity.y) return;
+
+              entity.x = Math.floor(Math.random() * 1000);
+              entity.y = Math.floor(Math.random() * 1000);
+            });
+          </code>
+        </pre>
+      </details>
+      <p>
+        <label for="systemSelect">Select System</label>
+        <select id="systemSelect"></select>
+      </p>
+      <p>
+        <button id="addSystem">Add system</button>
+        <button id="removeSystem">Remove system</button>
+      </p>
+
+      <p>Select action for selected system:</p>
+      <button id="turnOnButton">Turn on</button>
+      <button id="turnOffButton">Turn off</button>
+      <button id="toggleButton">Toggle</button>
+    </section>
+  </div>
+</div>

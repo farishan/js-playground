@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Features - Tilemap | Faris Han</title>
+  <link rel="stylesheet" href="../../global.css">
+  <style>
+    canvas {
+      width: 100%;
+      background: lightgray;
+      image-rendering: -moz-crisp-edges;
+      image-rendering: -webkit-crisp-edges;
+      image-rendering: pixelated;
+      image-rendering: crisp-edges;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container bg-light p-4">
+    <button onclick="window.history.back()">Back</button>
+    <a href="../../index.html">Back to Index</a>
+
+    <h1>Features - Tilemap</h1>
+
+    <h2>Requirements:</h2>
+    <ol>
+      <li><a href="../tileset/index.html#output">Tileset</a></li>
+    </ol>
+
+    <h3>Tools:</h3>
+    <ol>
+      <li>
+        Tile editor.<br>I use <a href="https://www.mapeditor.org/" target="_blank">https://www.mapeditor.org/</a>
+      </li>
+    </ol>
+
+    <h3>Output:</h3>
+    <ul>
+      <li>
+        Tilemap<br>
+        <img src="./tilemaps/tilemap1/tilemap1.png" onclick="selectTilemap('tilemap1')" style="cursor:pointer">
+        <img src="./tilemaps/tilemap2/tilemap2.png" onclick="selectTilemap('tilemap2')" style="cursor:pointer">
+      </li>
+    </ul>
+
+    <h3>Constructor:</h3>
+    <details>
+      <summary>Click to expand</summary>
+      <iframe src="./Tilemap.js" frameborder="0" width="100%" height="550px"
+        style="border: 1px solid; padding: 4px"></iframe>
+    </details>
+
+    <p>Constructor usage example with canvas rendering:</p>
+    <table style="width: 100%; border: 1px solid; padding: 4px">
+      <tbody>
+        <tr>
+          <td style="vertical-align: top">
+            <iframe src="../../examples/tilemap-and-canvas/index.html" frameborder="0" width="100%" height="300px"
+              id="tilemapIframe"></iframe>
+          </td>
+          <td>
+            <iframe src="../../examples/tilemap-and-canvas/main.js" frameborder="0" width="100%"
+              height="300px"></iframe>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Other tilemap concept:</h3>
+    <ul>
+      <li>
+        <a href="./Tilemap2dArray.js">Tilemap 2D Array</a>
+      </li>
+    </ul>
+
+    <h3>Links:</h3>
+    <nav>
+      <ul>
+        <li>
+          <a href="https://medium.com/geekculture/make-your-own-tile-map-with-vanilla-javascript-a627de67b7d9"
+            target="_blank">Medium -
+            Make your own tile map</a>
+        </li>
+        <li>
+          <a href="https://developer.mozilla.org/en-US/docs/Games/Techniques/Tilemaps" target="_blank">MDN -
+            Tilemaps</a>
+        </li>
+      </ul>
+
+      <a href="#" class="back-to-top">Back to top</a>
+    </nav>
+  </div>
+
+  <script>
+    const defaultSrc = "../../examples/tilemap-and-canvas/index.html"
+    function selectTilemap(filename) {
+      document.getElementById('tilemapIframe').src = defaultSrc + '?tilemap=' + filename
+    }
+  </script>
+</body>
+
+</html>

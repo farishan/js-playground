@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JavaScript Game Development Blog | Faris Han</title>
+  <!-- <link rel="stylesheet" href="./global.css"> -->
+  <link rel="stylesheet" href="../main.css">
+  <link rel="stylesheet" href="../lib/dark-mode/dark-mode.css">
+  </link>
+  <script defer src="../lib/dark-mode/dark-mode.js"></script>
+
+  <script>
+    const courseMap = {
+      1: {
+        name: 'Basic',
+        objective: '',
+        abstract: '100 to 300 words. identify purpose, address the scope, expectation settings',
+        expectations: [],
+        assignments: [
+          {
+            description: '50-100 words.'
+          }
+        ],
+        goals: [
+          // 3-5 objectives
+        ],
+        resources: [],
+        concepts: [
+          {
+            name: 'Game State'
+          }
+        ],
+        modules: [
+          {
+            name: 'ECS',
+            submodules: [
+              {
+                name: 'Entity'
+              },
+              {
+                name: 'Component'
+              },
+              {
+                name: 'System'
+              },
+            ]
+          }
+        ]
+      }
+    }
+
+    // const $courseMap = document.createElement('div')
+    // $courseMap.innerHTML = `<pre><code>${JSON.stringify(courseMap, '', 2)}</code></pre>`
+    // document.write(`<pre><code>${JSON.stringify(courseMap, '', 2)}</code></pre>`)
+  </script>
+</head>
+
+<body>
+  <div class="container">
+    <h1>Faris Han's JavaScript Game Development Blog</h1>
+
+    <details>
+      <summary>The Goal</summary>
+      <h2>What is my dream game?</h2>
+      <ul>
+        <li>
+          My dream game is a complex one, so a JavaScript module feature is a must.
+        </li>
+        <li>My dream game is a simple browser game that need no webserver. Just click <code>index.html</code> file and
+          play.</li>
+        <li>With 2 points above, I choose to use <a href="https://requirejs.org/" target="_blank">RequireJS</a> as my
+          module loader.</li>
+      </ul>
+      <h3>About Modules</h3>
+      <ul>
+        <li><code>MyModule.js</code> means it is a pure javascript object. Doesn't mean it can be imported.</li>
+        <li><code>MyModule.module.js</code> means it is a javascript module that can be imported. In my game development
+          context, it should be imported/loaded with <code>RequireJS</code>.</li>
+      </ul>
+      <p>If I need to use module in complex dev enviroment like React/Vue/Svelte, I can't just use pure javascript
+        object.
+        I need to convert the RequireJS module to matching module format, because I need to use <strong>module</strong>,
+        not <strong>object</strong>. Module is module, wether it is in RequireJS format (AMD-based) or CommonJS or
+        whatever module format.</p>
+    </details>
+
+    <nav>
+      <ul>
+        <li>
+          <a href="./modules/index.html">Modules</a>
+        </li>
+        <li>
+          <a href="./examples/">Examples</a>
+        </li>
+        <li>
+          <a href="./games/index.html">Games</a>
+        </li>
+      </ul>
+    </nav>
+
+    <hr>
+
+    <div id="coursemap"></div>
+
+    <section>
+      <h3>Roadmap</h3>
+      <ol>
+        <li>
+          Level 1 - Basic
+          <ul>
+            <li>
+              Game State
+              <ul>
+                <li>
+                  ECS
+                  <ol>
+                    <li>
+                      Entity
+                    </li>
+                    <li>
+                      Component
+                    </li>
+                    <li>
+                      System
+                    </li>
+                  </ol>
+                </li>
+              </ul>
+            </li>
+            <li>
+              Visual/Graphic
+              <ul>
+                <li>DOM</li>
+                <li>
+                  Canvas Context
+                </li>
+              </ul>
+            </li>
+            <li>
+              Controller/User Input
+              <ul>
+                <li>Mouse</li>
+                <li>Keyboard</li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+      </ol>
+    </section>
+
+    <hr>
+
+    <p>Cool links:</p>
+    <a href="https://www.npmjs.com/package/madge" target="_blank">https://www.npmjs.com/package/madge &nearr;</a>
+    <a href="https://dustinpfister.github.io/" target="_blank">https://dustinpfister.github.io/ &nearr;</a>
+  </div>
+</body>
+
+</html>

@@ -1,0 +1,102 @@
+<canvas id="canvas"></canvas>
+<table>
+  <tbody>
+    <tr>
+      <td style="vertical-align: top; padding-right: 20px;">
+        <label>
+          gridsize (px)<br>
+          <input type="number" placeholder="10" id="gridsize">
+        </label><br>
+        <button id="renderButton">render by gridsize</button>
+      </td>
+      <td>
+        <label>
+          column length<br>
+          <input type="number" placeholder="3" id="columnlength">
+        </label><br>
+        <label>
+          row length<br>
+          <input type="number" placeholder="3" id="rowlength">
+        </label><br>
+        <button id="renderButton1">fit rendering</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<script src="../../modules/grid/Grid.js"></script>
+<script>
+  const $canvas = document.getElementById('canvas')
+  const ctx = $canvas.getContext('2d')
+
+  let columnLength = 20;
+  let rowLength = 20;
+  const mapWidth = 32 * 20;
+  const mapHeight = 32 * 10;
+  let gridSize = 32;
+  const lineColor = 'blue';
+  const lineWidth = 0.5 // px
+
+  $canvas.style.position = 'relative'
+  $canvas.width = `${mapWidth}`
+  $canvas.style.width = `${mapWidth}px`
+  $canvas.height = `${mapHeight}`
+  $canvas.style.height = `${mapHeight}px`
+  $canvas.style.backgroundColor = '#aaa'
+  $canvas.style.imageRendering = 'pixelated'
+
+  function render(grid) {
+    ctx.clearRect(0, 0, mapWidth, mapHeight)
+
+    ctx.beginPath();
+    for (let index = 0; index < grid.lines.length; index++) {
+      const gridLine = grid.lines[index];
+
+      ctx.moveTo(gridLine.x + lineWidth, gridLine.y + lineWidth);
+      ctx.lineTo(gridLine.x + gridLine.width, gridLine.y + gridLine.height);
+      ctx.lineWidth = 1
+      ctx.strokeStyle = gridLine.color
+    }
+    ctx.stroke();
+  }
+
+  /* Form */
+  const $gridsize = document.getElementById('gridsize')
+  $gridsize.oninput = function (e) {
+    gridSize = $gridsize.value
+  }
+
+  const $columnlength = document.getElementById('columnlength')
+  $columnlength.oninput = function (e) {
+    columnLength = $columnlength.value
+  }
+  const $rowlength = document.getElementById('rowlength')
+  $rowlength.oninput = function (e) {
+    rowLength = $rowlength.value
+  }
+
+  const $renderButton = document.getElementById('renderButton')
+  const $renderButton1 = document.getElementById('renderButton1')
+
+  $renderButton.onclick = function () {
+    render(new Grid({
+      width: mapWidth,
+      height: mapHeight,
+      gridSize,
+      lineColor,
+      lineWidth
+    }));
+  }
+  $renderButton1.onclick = function () {
+    render(new Grid({
+      width: mapWidth,
+      height: mapHeight,
+      horizontalLineCount: columnLength,
+      verticalLineCount: rowLength,
+      fitWidth: true,
+      fitHeight: true,
+      lineColor,
+      lineWidth
+    }));
+  }
+</script>

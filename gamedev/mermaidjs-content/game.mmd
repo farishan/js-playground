@@ -1,0 +1,106 @@
+%%{init: {'theme': 'dark', 'themeVariables': {'fontSize': '18px'}}}%%
+
+%% https://mermaid.live/edit
+
+graph LR
+	a_10direction[10 directions,<br>N NE E SE S SW W NW U D]
+	a_2d_tileBased_browser_rpg[2D Tile-based Browser RPG]
+	a_2d[2D]
+	a_2dRpg[2D RPG]
+	a_2dBrowserGame[2D Browser Game]
+	a_2dBrowserRpg[2D Browser RPG]
+	a_2dMovement[2D Movement]
+	a_2dGraphic[2D Graphic]
+	a_3d[3D]
+	a_4direction[4 directions,<br>N E S W]
+	a_6direction[6 directions,<br>N E S W U D]
+	a_8direction[8 directions,<br>N NE E SE S SW W NW]
+	action[Action]
+	browser[Browser]
+  browserTechStack[Browser Tech Stack]
+  browserGameRenderer[Browser Game Renderer]
+	controller[Controller]
+  concept[Concept]
+	dimension[Dimension/Space]
+	game[Game]
+	genre[Genre]
+	graphic[Graphic]
+	html5[HTML5]
+	hybridDirection[Hybrid Direction]
+	javascript[JavaScript]
+	movement[Movement]
+	pixel[Pixel]
+	pixelatedTile[Pixelated Tile]
+	pixelBased[Pixel-based]
+	platform[Platform]
+	player[Player]
+  input[Input]
+  output[Output]
+	rpg[RPG]
+	textBased[Text-based / 0D]
+	textBasedRpg[Text-based RPG]
+	tileBased[Tile-based]
+	vector[Vector]
+	vectorizedTile[Vectorized Tile]
+	visualExperience[Visual Experience]
+	keyboard[Keyboard]
+	mouse[Mouse]
+  tile[Tile]
+  tilemap[Tilemap]
+  coordinate[Coordinate]
+  canvas[Canvas]
+  dom[DOM]
+  browserGame[Browser Game]
+  roomBased[Room Based]
+
+  discworldMud[Discworld MUD]
+
+	game --> genre
+	game --> player
+  game --> input & output
+  game --> concept
+
+	a_2d --> a_2dBrowserGame & a_2dGraphic & a_2dMovement
+	a_2dGraphic --> pixelBased & tileBased
+	a_2dMovement --> a_4direction
+	a_2dMovement --> a_8direction
+	a_2dMovement --> hybridDirection
+	action --> movement --> a_2dMovement
+	controller --> keyboard & mouse
+  concept --> tile & dimension
+	dimension --> a_2d & a_3d & textBased
+  a_2d & a_3d --> coordinate
+	genre --> rpg
+	hybridDirection --> a_10direction & a_6direction
+	pixel --> pixelatedTile & pixelBased
+	platform --> browser
+	player --> action
+  output --> visualExperience
+  output --> platform
+  input --> controller
+	a_2d & rpg --> a_2dRpg --> a_2dBrowserRpg
+	rpg --> textBasedRpg
+  rpg & a_10direction --> discworldMud
+	textBased --> textBasedRpg
+	tileBased --> a_2d_tileBased_browser_rpg
+	tileBased --> pixelatedTile
+	tileBased --> vectorizedTile
+	vector --> vectorizedTile
+	visualExperience --> graphic
+  graphic --> a_2dGraphic --> vector & pixel
+  keyboard & mouse --> action
+  tile --> tilemap
+  roomBased --> discworldMud
+  dimension --> roomBased
+
+	subgraph subgraph_browser[Browser]
+  browser --> browserTechStack
+	a_2dBrowserGame --> a_2dBrowserRpg
+	a_2dBrowserRpg --> a_2d_tileBased_browser_rpg
+  browserTechStack --> javascript
+  browserTechStack --> html5
+  html5 & javascript --> canvas
+  browser --> dom
+  browser --> browserGame --> a_2dBrowserGame
+  browserGame --> browserGameRenderer --> canvas & dom
+	end

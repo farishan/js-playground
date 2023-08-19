@@ -1,0 +1,201 @@
+<style>
+  body {
+    background-color: #222;
+  }
+
+  #console {
+    color: #fff;
+    padding: 8px;
+    max-height: 200px;
+    overflow-y: auto;
+  }
+</style>
+
+<canvas id="canvas"></canvas>
+<div id="console">hello world</div>
+
+<script src="../../../lib/debounce.js"></script>
+<script src="../../../lib/require.js"></script>
+<script src="../../modules/loop/Loop.js"></script>
+<script src="../../modules/tilemap/Tilemap2dArray.js"></script>
+
+<!-- keyboard controller -->
+<script>
+  let controllerCallback = function () { };
+  let keyups = [];
+
+  window.addEventListener('keyup', function (e) {
+    const dirMap = {
+      87: 'n',
+      65: 'w',
+      83: 's',
+      68: 'e'
+    };
+
+    const dir = dirMap[e.keyCode];
+
+    if (!dir) return;
+
+    if (keyups.length < 2) {
+      keyups.push(dir);
+    }
+
+    debounce(() => {
+      controllerCallback();
+      keyups = [];
+    }, 30)();
+  });
+</script>
+
+<script>
+  const FPS = 60
+  const TILE_SIZE = 32;
+  const $canvas = document.getElementById('canvas');
+  const context = $canvas.getContext('2d');
+  const $console = document.getElementById('console')
+  let lastLog = ''
+
+  const currentMap = [
+    [0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 1, 0, 0, 1, 0, 0, 0],
+    [0, 0, 1, 1, 1, 1, 0, 0],
+    [0, 0, 0, 0, 1, 0, 0, 0],
+    [0, 0, 0, 0, 1, 0, 0, 0],
+    [0, 0, 0, 0, 1, 0, 0, 0],
+    [0, 0, 0, 0, 0, 1, 0, 0],
+    [0, 1, 1, 1, 0, 0, 1, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0]
+  ];
+
+  const tilemap = new Tilemap2dArray(context, TILE_SIZE, currentMap)
+
+  $canvas.width = tilemap.getCanvasWidth();
+  $canvas.height = tilemap.getCanvasHeight();
+</script>
+
+<script>
+  require(['../../modules/ecs/ECS'], function (ECS) {
+    const ecs = new ECS();
+
+    ecs.createComponent('CanMove', { x: 0, y: 0, nextX: 0, nextY: 0 })
+    ecs.createComponent('Drawable', { drawable: true })
+    ecs.createComponent('HaveInventory', { items: [] })
+    ecs.createComponent('Stackable', { count: 0 })
+
+    let player = ecs.createEntity()
+    let apple = ecs.createEntity()
+
+    ecs.addComponentToEntity('CanMove', player, { x: 2, y: 2, nextX: 2, nextY: 2 })
+    ecs.addComponentToEntity('Drawable', player, { drawable: true })
+    ecs.addComponentToEntity('HaveInventory', player, { items: [] })
+    ecs.addComponentToEntity('Stackable', apple, { count: 0 })
+
+    const objectMap = {
+      '1_1': [apple]
+    }
+
+    const shouldHighlight = function (col, row) { return objectMap[`${col}_${row}`] }
+    const highlightColor = 'lightgreen'
+
+    controllerCallback = function () {
+      const entity = ecs.getEntity(player)
+
+      if (!keyups || !entity.x || !entity.y) return
+
+      const dir = keyups.join('')
+
+      if (!dir || dir.length === 0) return;
+
+      const moveMap = {
+        n: () => entity.y--, // w
+        w: () => entity.x--, // a
+        s: () => entity.y++, // s
+        e: () => entity.x++ // d
+      };
+
+      if (dir.includes('n') && dir.includes('w')) {
+        if (currentMap[entity.y - 1][entity.x - 1] === 1) {
+          moveMap['n']();
+          moveMap['w']();
+        }
+      } else if (dir.includes('n') && dir.includes('e')) {
+        if (currentMap[entity.y - 1][entity.x + 1] === 1) {
+          moveMap['n']();
+          moveMap['e']();
+        }
+      } else if (dir.includes('s') && dir.includes('w')) {
+        if (currentMap[entity.y + 1][entity.x - 1] === 1) {
+          moveMap['s']();
+          moveMap['w']();
+        }
+      } else if (dir.includes('s') && dir.includes('e')) {
+        if (currentMap[entity.y + 1][entity.x + 1] === 1) {
+          moveMap['s']();
+          moveMap['e']();
+        }
+      } else if (dir === 'n') {
+        if (currentMap[entity.y - 1][entity.x] === 1) {
+          moveMap['n']();
+        }
+      } else if (dir === 's') {
+        if (currentMap[entity.y + 1][entity.x] === 1) {
+          moveMap['s']();
+        }
+      } else if (dir === 'w') {
+        if (currentMap[entity.y][entity.x - 1] === 1) {
+          moveMap['w']();
+        }
+      } else if (dir === 'e') {
+        if (currentMap[entity.y][entity.x + 1] === 1) {
+          moveMap['e']();
+        }
+      }
+
+      if (lastLog === `${dir} ${entity.x} ${entity.y}`) return
+
+      $console.innerHTML += `<p>${dir} ${entity.x} ${entity.y}</p>`
+
+      const objId = `${entity.x}_${entity.y}`
+      const objects = objectMap[objId]
+
+      if (objects) {
+        $console.innerHTML += `<p>OBJECT! ${JSON.stringify(objects)}</p>`
+        const $button = document.createElement('button')
+        $button.innerHTML = 'Take'
+        $button.onclick = function () {
+          objects.forEach(obj => {
+            entity.items.push(obj.id)
+          });
+
+          delete objectMap[objId]
+          $button.remove()
+        }
+        $console.appendChild($button)
+      }
+      setTimeout(() => {
+        $console.scrollTo(0, $console.scrollHeight)
+      }, 20)
+    }
+
+    ecs.addSystem('draw', function (entity) {
+      /* @TODO add ecs system priority */
+
+      if (!entity.drawable) return
+
+      tilemap.draw(shouldHighlight, highlightColor)
+
+      context.fillStyle = 'red';
+      context.fillRect(
+        entity.x * TILE_SIZE,
+        entity.y * TILE_SIZE,
+        TILE_SIZE,
+        TILE_SIZE
+      );
+    })
+
+    ecs.activate('draw')
+
+    const loop = new Loop(true, FPS)
+    loop.addListener(function () { ecs.update() })
+  })
+</script>

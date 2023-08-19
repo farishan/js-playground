@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modules - Rectangle | Faris Han</title>
+  <link rel="stylesheet" href="../../global.css">
+  <script src="../../../lib/require.js"></script>
+</head>
+
+<body>
+  <div class="container bg-light p-4">
+    <button onclick="window.history.back()">Back</button>
+    <a href="../../index.html">Back to Index</a>
+
+    <h1>Modules - Rectangle</h1>
+
+    <details>
+      <summary>Constructor</summary>
+      <iframe src="./Rectangle.js" frameborder="0" width="100%" height="550px"
+        style="border: 1px solid; padding: 4px"></iframe>
+    </details>
+
+    <a href="#" class="back-to-top">Back to top</a>
+  </div>
+
+  <script>
+    require(['Rectangle'], function (Rectangle) {
+      console.log(new Rectangle());
+    })
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,121 @@
+<link rel="stylesheet" href="./main.css">
+<script src="../../../lib/el.js"></script>
+<script src="../../../lib/ShortUniqueId.js"></script>
+<script data-main="main" src="../../../lib/require.js"></script>
+
+<h1>ECS Playground</h1>
+
+<a href="./entity.html">Entity Playground</a>
+<a href="./component.html">Component Playground</a>
+<a href="./system.html">System Playground</a>
+
+<div style="display: flex;">
+  <pre style="border: 1px solid; padding: 0 20px 0 10px; margin-right: 10px;">
+    <h2>ECS</h2>
+    <code>
+      <div id="monitor"></div>
+    </code>
+  </pre>
+  <div>
+    <section>
+      <h2>Entity</h2>
+      <p>
+        <button id="addEntity">Add new entity</button>
+      <p>
+        <label for="entitySelect">Select Entity</label>
+        <select id="entitySelect"></select>
+      </p>
+
+      <p>Select action from selected entity:</p>
+      <p>
+        <button id="removeEntity">Remove from ECS</button>
+      </p>
+      </p>
+    </section>
+
+    <hr>
+
+    <section>
+      <h2>Component</h2>
+
+      <details>
+        <summary><code>HaveDistance</code></summary>
+        <code>ecs.createComponent('HaveDistance', { distance: 0, shouldMove: false });</code>
+      </details>
+      <details>
+        <summary><code>Vector2</code></summary>
+        <code>ecs.createComponent('Vector2', { x: 0, y: 0 });</code>
+      </details>
+
+      <p>
+        <label for="componentSelect">Select Component</label>
+        <select id="componentSelect"></select>
+      </p>
+
+      <p>Select action from selected component:</p>
+      <button id="addComponent">Add to ECS</button>
+      <button id="removeComponent">Remove from ECS</button>
+      <button id="addComponentToEntity">Add to selected entity</button>
+      <button id="removeEntityComponent">Remove from selected entity</button>
+    </section>
+
+    <hr>
+
+    <section>
+      <h2>System</h2>
+      <details>
+        <summary><code>move system</code></summary>
+        <pre>
+          <code>
+            ecs.addSystem('move', function (entity) {
+              if (!entity.distance && entity.distance !== null) return;
+
+              if (entity.shouldMove) {
+                if (entity.distance === null) entity.distance = 0;
+
+                entity.distance++;
+              }
+            });
+          </code>
+        </pre>
+      </details>
+      <details>
+        <summary><code>randomMove system</code></summary>
+        <pre>
+          <code>
+            ecs.addSystem('randomMove', function (entity) {
+              console.log('random moving...', entity);
+
+              if (entity.x === null) {
+                entity.x = 1;
+              }
+
+              if (entity.y === null) {
+                entity.y = 1;
+              }
+
+              if (!entity.x || !entity.y) return;
+
+              entity.x = Math.floor(Math.random() * 1000);
+              entity.y = Math.floor(Math.random() * 1000);
+            });
+          </code>
+        </pre>
+      </details>
+      <p>
+        <label for="systemSelect">Select System</label>
+        <select id="systemSelect"></select>
+      </p>
+      <p>
+        <button id="addSystem">Add system</button>
+        <button id="removeSystem">Remove system</button>
+      </p>
+
+      <p>Select action for selected system:</p>
+      <button id="turnOnButton">Turn on</button>
+      <button id="turnOffButton">Turn off</button>
+      <button id="toggleButton">Toggle</button>
+      <button id="runButton">Run</button>
+    </section>
+  </div>
+</div>

@@ -1,0 +1,23 @@
+<canvas id="canvas"></canvas>
+<script src="../../modules/tileset/Tileset.js"></script>
+<script src="../../modules/tilemap/Tilemap.js"></script>
+<script src="./main.js"></script>
+<script>
+  const onTileMapLoaded = tilemap.loadData
+</script>
+<script src="../../modules/tilemap/tilemaps/tilemap1/tilemap1.js" id="mapScript"></script>
+<script>
+  let selectedTilemap = '../../modules/tilemap/tilemaps/tilemap1/tilemap1.js';
+
+  if (window.location.search.includes('tilemap')) {
+    const filename = window.location.search.split('?tilemap=')[1];
+    selectedTilemap =
+      '../../modules/tilemap/tilemaps/' + filename + '/' + filename + '.js';
+
+    document.getElementById('mapScript').remove()
+    const newScript = document.createElement('script')
+    newScript.id = 'mapScript'
+    newScript.src = selectedTilemap
+    document.body.appendChild(newScript)
+  }
+</script>

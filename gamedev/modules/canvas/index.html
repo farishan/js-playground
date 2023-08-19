@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tools - Canvas | Faris Han</title>
+  <link rel="stylesheet" href="../../global.css">
+</head>
+
+<body>
+  <div class="container bg-light p-4">
+    <button onclick="window.history.back()">Back</button>
+    <a href="../../index.html">Back to Index</a>
+
+    <h1>Tools - Canvas</h1>
+
+    <p>Canvas is where we draw all of the game graphics.</p>
+
+    <p>How to define a canvas:</p>
+    <ul>
+      <li>
+        <code>
+          <!-- google this to include html code in <code> tag: html escape tool -->
+          &lt;canvas id=&quot;canvasId&quot;&gt;&lt;/canvas&gt;
+        </code>
+      </li>
+      <li>
+        <pre>
+          <code>
+            const $canvas = document.createElement('canvas');
+            $canvas.id = 'canvasId';
+          </code>
+        </pre>
+      </li>
+    </ul>
+
+    <p>Notes:</p>
+    <ul>
+      <li>
+        Canvas constructor should only contain metadata of "the real canvas" seen by player.
+        <ul>
+          <li>The goal is to prevent the full canvas DOM to be passed between game runtime to save memory.</li>
+          <li>We can use something like "canvas manager" to save the id, and pass the id instead of the full object
+            properties.</li>
+        </ul>
+      </li>
+      <li>Your game entities is not "live" in a canvas. But, they have some "canvas-renderable"/graphical properties
+        like dimension, color, or sprite.</li>
+    </ul>
+    <p></p>
+
+    <code>
+      <iframe src="./CanvasConstructor.js" frameborder="0" style="width: 100%;"></iframe>
+    </code>
+
+    <p>While "the real canvas" managed by <a href="../canvas-renderer/index.html">CanvasRenderer</a>.</p>
+    <iframe src="../canvas-renderer/CanvasRenderer.js" frameborder="0" style="width: 100%;"></iframe>
+
+    <p>[draft] Canvas layer types, ordered by z-index:</p>
+
+    <ol>
+      <li>static layer: background</li>
+      <li>dynamic layer: animated background entities
+      </li>
+      <li>dynamic layer: animated/controlled game entities
+      </li>
+      <li>dynamic layer: user interaction (mouse)
+      </li>
+    </ol>
+
+    <h2>Examples</h2>
+    <table style="width: 100%; border: 1px solid; padding: 4px">
+      <tbody>
+        <tr>
+          <td style="vertical-align: top">
+            <iframe src="../../examples/canvas-mouse-layers/index.html" frameborder="0" width="100%" height="300px"></iframe>
+          </td>
+          <td>
+            <iframe src="../../examples/canvas-mouse-layers/main.js" frameborder="0" width="100%" height="300px"></iframe>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <a href="#" class="back-to-top">Back to top</a>
+  </div>
+</body>
+
+</html>

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modules - Intersection | Faris Han</title>
+  <link rel="stylesheet" href="../../global.css">
+  <script src='./is-intersect.rectangle.js'></script>
+  <script src="../../../lib/require.js"></script>
+</head>
+
+<body>
+  <div class="container bg-light p-4">
+    <nav>
+      <button onclick="window.history.back()">Back</button>
+      <a href="../../index.html">Back to Index</a>
+    </nav>
+
+    <h1>Modules - Intersection</h1>
+
+    <p>Intersection or overlap is when 2 objects crosses each other.</p>
+    <p>For simplicity, I will assume these objects are <strong>rectangles</strong>, so they must have at least 4
+      properties:</p>
+    <p>
+      Visualizing intersection is difficult with text. So we need a canvas for visualization.
+    </p>
+    <ul>
+      <li>
+        x position
+      </li>
+      <li>
+        y position
+      </li>
+      <li>
+        width
+      </li>
+      <li>
+        height
+      </li>
+    </ul>
+    <p>How to:</p>
+    <ol>
+      <li>
+        Get top left and bottom right coordinate of each rect.
+      </li>
+      <li>
+        If a rect is on the left or top of other, they are <strong>NOT</strong> intersecting.
+      </li>
+      <li>Read more: <a href="https://www.geeksforgeeks.org/find-two-rectangles-overlap/" target="_blank"
+          rel="noopener noreferrer">https://www.geeksforgeeks.org/find-two-rectangles-overlap/</a></li>
+    </ol>
+
+    <div id="canvasContainer" style="position:relative">
+      <canvas id="canvas" style="position: absolute; left:0; top:0; border: 1px solid"></canvas>
+      <canvas id="canvas1" style="position: absolute; left:0; top:0; border: 1px solid"></canvas>
+    </div>
+
+    <a href="#" class="back-to-top">Back to top</a>
+  </div>
+
+  <script>
+    require(['../rectangle/Rectangle'], function (Rectangle) {
+      const canvasContainer = document.getElementById('canvasContainer')
+      const canvas = document.getElementById('canvas')
+      const canvas1 = document.getElementById('canvas1')
+      const context = canvas.getContext('2d')
+      const context1 = canvas1.getContext('2d')
+
+      const canvasWidth = 400
+      const canvasHeight = 300
+
+      canvas.width = canvas1.width = canvasWidth
+      canvas.height = canvas1.height = canvasHeight
+      canvasContainer.style.width = canvas.style.width = canvas1.style.width = canvasWidth + 'px'
+      canvasContainer.style.height = canvas.style.height = canvas1.style.height = canvasHeight + 'px'
+
+      canvas1.style.opacity = 0.5
+
+      /* Mouse cursor visualization for canvas */
+      const mouseRect = new Rectangle(0, 0, 50, 50, 'gray')
+
+      /* Object to intersect */
+      const objRect = new Rectangle(canvas.width / 2, canvas.height / 2, 30, 30)
+
+      let shouldDraw = false;
+      let shouldDraw1cache = true;
+      let shouldDraw1 = true;
+
+      canvasContainer.onmouseenter = function () {
+        shouldDraw = true
+      }
+
+      canvasContainer.onmouseleave = function () {
+        shouldDraw = false
+      }
+
+      canvasContainer.onmousemove = function (e) {
+        mouseRect.x = e.offsetX
+        mouseRect.y = e.offsetY
+
+        if (isIntersect(mouseRect, objRect)) {
+          shouldDraw1 = true
+          objRect.color = 'red'
+          draw1();
+        } else {
+          shouldDraw1 = false
+          objRect.color = 'black'
+          draw1();
+        }
+      }
+
+      function draw() {
+        context.clearRect(0, 0, canvas.width, canvas.height)
+        /* Draw rect cursor */
+        context.fillStyle = mouseRect.color
+        context.fillRect(...mouseRect.getFillRectArgs())
+      }
+
+      function draw1() {
+        if (shouldDraw1 !== shouldDraw1cache) {
+          shouldDraw1cache = shouldDraw1
+          context1.fillStyle = objRect.color
+          context1.fillRect(...objRect.getFillRectArgs())
+        }
+      }
+
+      draw1()
+
+      function animate() {
+        if (shouldDraw) draw()
+        requestAnimationFrame(animate)
+      }
+
+      animate()
+    })
+  </script>
+</body>
+
+</html>

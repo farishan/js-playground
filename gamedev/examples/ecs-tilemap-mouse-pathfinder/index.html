@@ -1,0 +1,298 @@
+<link rel="stylesheet" href="./styles/index.css">
+
+<canvas id="canvas"></canvas>
+<div id="menu"></div>
+
+<script src="./config.js"></script>
+<script src="./helpers.js"></script>
+<script src="./loop.js"></script>
+
+<script src="./classes/Game.js"></script>
+<script src="./classes/Canvas.js"></script>
+<script src="./classes/UI.js"></script>
+<script src="./classes/Vector2D.js"></script>
+<script src="./classes/Tile.js"></script>
+
+<script src="./features/GridManager.js"></script>
+<script src="./features/TileManager.js"></script>
+
+<script src="./classes/Map2D.js"></script>
+<script src="./classes/MapEntity.js"></script>
+<script src="./classes/Player.js"></script>
+
+<script>
+  const $canvas = document.getElementById('canvas')
+  const $menu = document.getElementById('menu')
+  const UI_menu = new UI($menu)
+
+  // let map = new Map2D($canvas, 24, 18);
+  let map = null
+
+  function onTileMapLoaded(name, data) {
+    map = new Map2D($canvas, data.width, data.height, data.layers[0].data);
+    map.init();
+  }
+</script>
+
+<script src="./maps/2.js"></script>
+
+<script>
+  const game = new Game()
+  gameLoop.game = game
+
+  /* Initial game update */
+  // game.update()
+
+  let player = new Player(10, 10)
+  let testObject = new MapEntity(5, 5, 1, 1, 'blue')
+  let testObject1 = new MapEntity(6, 6, 1, 1, 'lightblue')
+  /* @TODO implement big entity mouse collision */
+  let testEntity = new MapEntity(7, 7, 2, 2, 'red')
+  testEntity.haveHP = true
+  testObject.isSolid = true
+  testObject.name = 'apple'
+
+  map.addEntity(testObject);
+  map.addEntity(testObject1);
+  map.addEntity(testEntity);
+  map.addEntity(player);
+
+  function getAlternativeTile(gridCoord, direction) {
+    const alterX = direction.includes('W') ? gridCoord.x - 1 : direction.includes('E') ? gridCoord.x + 1 : gridCoord.x
+    const alterY = direction.includes('N') ? gridCoord.y - 1 : direction.includes('S') ? gridCoord.y + 1 : gridCoord.y
+
+    let result = checkX()
+
+    if (result) return result
+
+    result = checkY()
+
+    return result
+
+    function checkX() {
+      if (gridCoord.x !== alterX) {
+        const tileId = `${alterX}_${gridCoord.y}`
+        const targetTile = map.tileManager.getTileById(tileId);
+
+        if (targetTile.walkable) {
+          console.log('ALTER WALKABLE X!')
+          return { x: true, y: false }
+        } else {
+          return false
+        }
+      } else {
+        return false
+      }
+    }
+
+    function checkY() {
+      if (gridCoord.y !== alterY) {
+        const tileId = `${gridCoord.x}_${alterY}`
+        const targetTile = map.tileManager.getTileById(tileId);
+
+        if (targetTile.walkable) {
+          console.log('ALTER WALKABLE Y!')
+          return { x: false, y: true }
+        } else {
+          return false
+        }
+      } else {
+        return false
+      }
+    }
+  }
+
+  const pathfinder = function (gridCoord, direction) {
+    const targetTileX =
+      direction.includes('W') ? gridCoord.x - 1
+        : direction.includes('E') ? gridCoord.x + 1
+          : gridCoord.x
+
+    const targetTileY =
+      direction.includes('N') ? gridCoord.y - 1
+        : direction.includes('S') ? gridCoord.y + 1
+          : gridCoord.y
+
+    const tileId = `${targetTileX}_${targetTileY}`
+
+    console.log({ targetTile: tileId })
+
+    const targetTile = map.tileManager.getTileById(tileId);
+
+    if (targetTile.walkable) {
+      console.log('WALKABLE!')
+      return true;
+    } else {
+      console.log('STOP!')
+      return getAlternativeTile(gridCoord, direction)
+    }
+  }
+
+  player.setPathfinder(pathfinder)
+
+  game.onupdate = function () {
+    if (!game.shouldUpdate) return
+
+    console.log('[START] game turn ' + game.updateCount, player.actionQueue.length);
+    let shouldDraw = false
+
+    player.update(function (shouldDraw, payload) {
+      if (shouldDraw) { shouldDraw = true }
+
+      if (payload && payload.action === 'take') {
+        map.removeEntity(payload.data)
+      }
+    })
+
+    console.log('player update done', player.actionQueue.length)
+
+    /* test AI */
+    if (Math.random() < 0.5) {
+      /* @TODO collision system */
+      if (testEntity.x < 20) {
+        testEntity.x++
+        shouldDraw = true
+        console.log("AI update")
+      }
+    } else {
+      if (testEntity.x > 5) {
+        testEntity.x--
+        shouldDraw = true
+        console.log("AI update")
+      }
+    }
+
+    const gameShouldTurn = player.actionQueue.length
+
+    game.shouldUpdate = gameShouldTurn
+
+    // if (shouldDraw) {
+    // }
+    game.draw()
+
+    console.log('[END] game turn' + game.updateCount, player.actionQueue.length);
+  }
+
+  map.setClickListener(function (e) {
+    if (!WITH_CLICK_LISTENER) return
+
+    UI_menu.hide();
+    const mouseCoord = { x: e.offsetX, y: e.offsetY }
+
+    /* Get clicked area */
+    const clickedGrid = map.getClickedGrid(mouseCoord);
+    if (!clickedGrid || clickedGrid === null) return
+
+    const clickedTile = map.getClickedTile(mouseCoord)
+    if (!clickedTile || clickedTile === null) return
+
+    if (!clickedTile.walkable) return;
+
+    /* Check if game should turn */
+    const { x: gridX, y: gridY } = clickedGrid.getGridCoord()
+    const newTargetPosition = new Vector2D(gridX, gridY)
+    console.log({ clickOn: newTargetPosition })
+
+    player.setTargetPosition(newTargetPosition);
+    player.addAction('move');
+
+    game.shouldUpdate = true;
+
+    /* Highlight player target position */
+    map.highlight(player.targetPosition, 'yellow');
+
+    // map.drawPath(
+    //   new Vector2D(player.x, player.y),
+    //   newTargetPosition
+    // )
+  });
+
+  map.setAltClickListener(function (e) {
+    if (!WITH_CLICK_LISTENER) return
+
+    UI_menu.reset();
+    UI_menu.hide();
+
+    const mouseCoord = { x: e.offsetX, y: e.offsetY }
+
+    /* Get clicked area */
+    const clickedGrid = map.getClickedGrid(mouseCoord);
+    console.log(clickedGrid);
+    if (!clickedGrid || clickedGrid === null) return
+    const { x: gridX, y: gridY } = clickedGrid.getGridCoord()
+    const newTargetPosition = new Vector2D(gridX, gridY)
+
+    const clickedTile = map.getClickedTile(mouseCoord)
+    console.log(clickedTile);
+    if (!clickedTile || clickedTile === null) return
+
+    const clickedEntities = map.getClickedEntities(new Vector2D(e.offsetX, e.offsetY));
+    if (clickedEntities.length) {
+      for (let index = 0; index < clickedEntities.length; index++) {
+        const entity = clickedEntities[index];
+        /* @TODO add isSolid to item system (?) */
+        if (entity.isSolid) {
+          console.log('isSolid')
+          const $takeButton = document.createElement('button')
+          $takeButton.innerHTML = 'take item'
+          $takeButton.onclick = function () {
+            player.setTargetPosition(newTargetPosition);
+            player.addAction('move');
+            player.addAction('take', testObject);
+
+            game.shouldUpdate = true;
+            UI_menu.hide();
+          }
+
+          UI_menu.add($takeButton)
+        }
+
+        if(entity.haveHP){
+          const $attack = document.createElement('button')
+          $attack.innerHTML = 'attack'
+          $attack.onclick = function () {
+            /* @TODO implement follow entity system */
+            player.setTargetPosition(new Vector2D(entity.x, entity.y));
+            player.addAction('move');
+            // player.addAction('take', testObject);
+
+            game.shouldUpdate = true;
+            UI_menu.hide();
+          }
+
+          UI_menu.add($attack)
+        }
+      }
+    }
+    console.log({ clickedEntities });
+
+    map.highlight(newTargetPosition, 'gray');
+
+    UI_menu.show(new Vector2D(e.x, e.y))
+
+    if (!clickedTile.walkable) return;
+
+    map.highlight(newTargetPosition, 'yellow');
+
+    const $walkButton = document.createElement('button')
+    $walkButton.innerHTML = 'walk here'
+    $walkButton.onclick = function () {
+      player.setTargetPosition(newTargetPosition);
+      player.addAction('move');
+
+      game.shouldUpdate = true;
+      UI_menu.hide();
+    }
+
+    UI_menu.add($walkButton)
+  })
+
+  game.setMap(map);
+  game.draw();
+
+  gameLoop.start();
+
+  // setTimeout(() => {
+  //   gameLoop.stop()
+  // }, 3000)
+</script>

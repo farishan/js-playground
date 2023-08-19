@@ -1,0 +1,5 @@
+- Create tileset with Gale.exe
+- Export tileset to `.png`
+- Import tileset from Tiled.exe
+- Create tilemap with imported tileset
+- Export to `.js`

@@ -1,0 +1,13 @@
+<body>
+  <a href="../../index.html" id="back">Back to index</a>
+  <div id="root" style="display: flex; justify-content: center"></div>
+  <script src="../../modules/canvas/Canvas.js"></script>
+  <script src="../../modules/dom-grid/DomGrid.js"></script>
+  <script src="main.js"></script>
+</body>
+<script>
+  if (window.top !== window.self) {
+    // embedded
+    document.getElementById('back').style.display = 'none'
+  }
+</script>

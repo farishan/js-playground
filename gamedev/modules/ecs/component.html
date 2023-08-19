@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modules - Component | Faris Han</title>
+  <link rel="stylesheet" href="../../global.css">
+
+  <script src="../../../lib/require.js"></script>
+  <script>
+    require(['Component', 'components/Vector2.component'], function (Component, Vector2) {
+      // console.log(new Vector2())
+      console.log(Vector2)
+
+      const component = new Component()
+      console.log(component);
+    })
+  </script>
+</head>
+
+<body>
+  <div class="container bg-light p-4">
+    <a href="../../index.html">Back to Index</a>
+    <h1>Modules - Component</h1>
+
+    <p>Component in ECS (Entity-Component-System) is an object with grouped properties that can be attached to an
+      Entity.</p>
+
+    <p>Constructor:</p>
+    <iframe src="./Component.js" frameborder="0" style="width:100%; height:200px"></iframe>
+  </div>
+</body>
+
+</html>

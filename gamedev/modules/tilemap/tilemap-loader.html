@@ -1,0 +1,11 @@
+<script src="../../../lib/require.js"></script>
+<script>
+  require(['./TilemapLoader'], function (TilemapLoader) {
+    const tilemapLoader = new TilemapLoader()
+    const tilemapSource = '../../modules/tilemap/tilemaps/tilemap1/tilemap1.js'
+
+    tilemapLoader.load(tilemapSource, function (data) {
+      console.log(data);
+    })
+  })
+</script>
