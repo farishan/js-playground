@@ -1,0 +1,12 @@
+{
+  "name": "textarea-with-persistence",
+  "version": "0.1.0",
+  "description": "Textarea element with browser's local storage persistence",
+  "scripts": {
+    "build": "rollup main.js --file bundle.js --format iife"
+  },
+  "keywords": ["textarea", "localstorage", "persistence"],
+  "author": "Faris Han",
+  "license": "GPL-3.0",
+  "type": "module"
+}
