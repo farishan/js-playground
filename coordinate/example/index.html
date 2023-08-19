@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Coordinate</title>
+</head>
+<body>
+  <script src="./Coordinate.js"></script>
+  <script>
+    const coordinateA = new Coordinate(5, 5)
+    const coordinateB = new Coordinate({x: 5, y: 5})
+    // console.log(coordinateB)
+    const coordinateC = new Coordinate([5, 5])
+    const coordinateD = new Coordinate()
+    console.log({coordinateA, coordinateB, coordinateC, coordinateD})
+    coordinateD.set(10, 10)
+    coordinateD.set([15, 16])
+    coordinateD.set({x: 20, y: 20})
+    console.log(coordinateD.getDistanceFrom({x: 21, y: 20}))
+    console.log({coordinateA, coordinateB, coordinateC, coordinateD})
+  </script>
+</body>
+</html>
