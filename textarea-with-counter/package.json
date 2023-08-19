@@ -1,0 +1,12 @@
+{
+  "name": "textarea-with-counter",
+  "version": "0.1.0",
+  "description": "Textarea element with character and word counter",
+  "scripts": {
+    "build": "rollup main.js --file bundle.js --format iife"
+  },
+  "keywords": ["textarea", "counter"],
+  "author": "Faris Han",
+  "license": "GPL-3.0",
+  "type": "module"
+}
