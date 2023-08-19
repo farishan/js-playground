@@ -1,0 +1,16 @@
+{
+  "name": "function-manager",
+  "version": "1.0.0",
+  "main": "src/index.js",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "build": "npx rollup -c",
+    "example": "npx rollup --config example/rollup.config.js"
+  },
+  "devDependencies": {
+    "esbuild": "^0.16.10",
+    "rollup": "^3.8.1",
+    "rollup-plugin-uglify": "^6.0.4"
+  }
+}
