@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    check console
+
+    <script src="./bundle.js"></script>
+
+    <!-- Include processor script -->
+    <!-- <script src="../main.js"></script> -->
+    <!-- <script src="../index.js"></script> -->
+    <!-- <script src="./input.js"></script> -->
+    <!-- <script src="./storage.js"></script> -->
+
+    <!-- <script>
+        /* Init processor */
+        const processor = new Processor({debug:true})
+
+        processor.start()
+
+        processor.add('test', () => {
+            console.log('testing...')
+        })
+        processor.add('test1', () => {
+            console.log('testing1...')
+        })
+        processor.add('test2', () => {
+            console.log('testing2...')
+        })
+
+        setTimeout(() => {
+            processor.stop()
+            console.log(processor.getLogs())
+        }, 1000)
+
+        /* Testing processor API */
+        // processor.process(console.log('test')) // should throw error
+        // processor.process(() => console.log('test')) // should log: test
+    </script> -->
+</body>
+</html>

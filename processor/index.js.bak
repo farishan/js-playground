@@ -1,0 +1,87 @@
+/**
+ * Processor is used to monitor, interfere, and/or manage JS program processes
+ */
+function Processor(options = {}) {
+    const { debug, autostart } = options
+
+    const self = this
+    const MAX_LOG = 100
+
+    let shouldRun = autostart ? true : false
+    this.processMap = {}
+
+    /* Log System */
+    const logs = []
+    function log(message) {
+        if (debug) console.log(performance.now() + ' ' + message)
+
+        if (logs.length >= MAX_LOG) {
+            logs.shift()
+        }
+
+        logs.push({
+            timestamp: performance.now(),
+            message
+        })
+    }
+
+    function processAll() {
+        Object.keys(self.processMap).forEach(processKey => {
+            log(`processing ${processKey}...`)
+            self.processMap[processKey]()
+            delete self.processMap[processKey]
+        });
+    }
+
+    /* WARNING: Recursive! */
+    function loop() {
+        processAll()
+
+        if (!shouldRun) return
+        window.requestAnimationFrame(loop)
+    }
+
+    this.start = function () {
+        log('starting processor...')
+
+        shouldRun = true
+        window.requestAnimationFrame(loop)
+
+        log('processor started.')
+    }
+
+    this.stop = function () {
+        log('stopping processor...')
+
+        shouldRun = false
+        console.log(self.processMap)
+
+        log('processor stopped.')
+    }
+
+    this.getLogs = function () {
+        return logs
+    }
+
+    this.add = function (id, func) {
+        log('adding process...')
+        if (self.processMap[id]) console.warning('a process will be replaced!', id)
+
+        self.processMap[id] = func
+    }
+
+    this.process = function (func) {
+        if (typeof func !== 'function') throw Error('Failed to process function with typeof ' + typeof func)
+
+        func()
+    }
+
+    return this
+}
+
+/**
+ * a process is simply a javascript function with identifier
+ *
+ * eh bukan ding.
+ * process ga boleh js func. kalau bisa JSON aja supaya bisa disimpen di database
+ */
