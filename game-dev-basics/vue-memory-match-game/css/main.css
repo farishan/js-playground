@@ -1,0 +1,103 @@
+* {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+body {
+	font-family: "Open Sans", "Helvetica", "Arial", sans-serif;
+}
+
+img {
+	user-drag: none; 
+	user-select: none;
+	-moz-user-select: none;
+	-webkit-user-drag: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+}
+
+button {
+	cursor: pointer;
+	outline: none;
+}
+
+.btn {
+	padding: 5px 15px;
+	border-radius: 5px;
+	text-transform: uppercase;
+}
+
+.btn-big {
+	padding: 10px 20px;
+	font-size: 1.2em;
+}
+
+.text-center {
+	text-align: center;
+}
+
+.flex-container {
+	display: flex;
+}
+
+.sidebar {
+	padding: 15px;
+	min-width: 200px;
+	max-width: 200px;
+	border: 1px solid black;
+}
+
+.cards {
+	flex-wrap: wrap;
+	justify-content: space-around;
+	max-width: 800px;
+	margin: auto;
+}
+
+.card-container {
+	display: inline-block;
+	margin: 5px;
+	cursor: pointer;
+}
+
+/* entire container, keeps perspective */
+.card {
+	perspective: 1000px;
+}
+	/* flip the pane when hovered */
+	.card.selected .flipper {
+		transform: rotateY(180deg);
+	}
+
+.card, .front, .back {
+	width: 133px;
+	min-height: 187px;
+}
+
+/* flip speed goes here */
+.flipper {
+	transition: 0.3s;
+	transform-style: preserve-3d;
+	position: relative;
+}
+
+/* hide back of pane during swap */
+.front, .back {
+	backface-visibility: hidden;
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+/* front pane, placed above back */
+.front {
+	z-index: 2;
+	/* for firefox 31 */
+	transform: rotateY(0deg);
+}
+
+/* back, initially hidden pane */
+.back {
+	transform: rotateY(180deg);
+}

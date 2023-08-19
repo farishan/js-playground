@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script src="./alphabetor.js"></script>
+    <script src="./wordist.js"></script>
+    <script>
+        // const alphabetor = new Alphabetor()
+        // const randomAlphabet = alphabetor.getRandomAlphabet()
+        // document.write(randomAlphabet)
+
+        const wordist = new Wordist(new Alphabetor())
+        const randomWord = wordist.getRandomWord(50)
+        console.log(randomWord)
+        document.write(randomWord)
+    </script>
+</body>
+</html>

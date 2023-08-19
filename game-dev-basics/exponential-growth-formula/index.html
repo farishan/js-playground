@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <link rel="stylesheet" type="text/css" href="./main.css">
+</head>
+<body>
+
+  <h1>Exponential Growth Formula</h1>
+
+  <div class="layout">
+    <div class="layout-item">
+      <p>Credits: Formula belongs to Eternal Lands.</p>
+
+  <pre>
+    <code>
+      for(var i=1; i<=array.length; i++){
+        if(i<=10){
+          value += value*40/100;
+        }
+        else if(i<=20){
+          value += value*30/100;
+        }
+        else if(i<=30){
+          value += value*20/100;
+        }
+        else if(i<=40){
+          value += value*14/100;
+        }
+        else if(i<=90){
+          value += value*7/100;
+        }
+        else {
+          value += value*4/100;
+        }
+      }
+    </code>
+  </pre>
+    </div>
+    <div class="layout-item">
+      <div id="root" style="max-height: 200px; overflow-y: auto"></div>
+  <div id="info" style="margin: 8px 0"></div>
+
+
+  <input type="num" min="3" max="100" id="nameCount" value="3" placeholder="min 3, max 100" />
+  <button onclick="render()">generate</button>
+    </div>
+  </div>
+
+  <script>
+    function render(){
+      var names = [];
+      var $input = document.getElementById('nameCount')
+      var length = parseInt($input.value)
+
+      if (length > 100) {
+        length = 100;
+        $input.value = length;
+      };
+
+      for (var i = 0; i < length; i++) {
+        names.push('entity_'+i)
+      }
+
+      var data = generateEnemies(names);
+      document.getElementById('root').innerHTML = '<pre><code>'+JSON.stringify(data, null, 2)+'</code></pre>';
+      document.getElementById('info').innerHTML = 'lowest hp: '+data[0].hp+' | highest hp: '+data[data.length-1].hp;
+    }
+
+    function generateEnemies(nameDatabase){
+    // Eternal Lands exponential growth formula
+    var result = [];
+    var count = 2;
+    
+    for(var i=1; i<=nameDatabase.length; i++){
+      if(i<=10){
+        count += count*40/100;
+      }
+      else if(i<=20){
+        count += count*30/100;
+      }
+      else if(i<=30){
+        count += count*20/100;
+      }
+      else if(i<=40){
+        count += count*14/100;
+      }
+      else if(i<=90){
+        count += count*7/100;
+      }
+      else {
+        count += count*4/100;
+      }
+
+      result.push({
+        name: nameDatabase[i-1],
+        hp: Math.floor(count)
+      });
+    }
+
+    return result;
+  }
+
+</script>
+</body>
+</html>

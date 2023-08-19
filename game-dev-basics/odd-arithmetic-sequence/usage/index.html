@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Sword Maker</title>
+	<link rel="stylesheet" href="main.css">
+</head>
+<body>
+	<div id="app">
+		<h1>Sword Maker</h1>
+
+		<div>
+			<label>list length</label><br>
+			<input type="num" v-model="listLength">
+		</div>
+
+		<div>
+			<label>min dmg</label><br>
+			<input type="num" v-model="min">
+		</div>
+
+		<div>
+			<label>max dmg</label><br>
+			<input type="num" v-model="max">
+		</div>
+
+		<div>
+			<button @click="generate">generate</button>
+		</div>
+
+		<div>
+			Damage Sequence:
+			<table>
+				<tr v-for="item in list">
+					<td>{{item}}</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+	<script src="vue.js"></script>
+	<script src="../oastbn.js"></script>
+	<script src="main.js"></script>
+</body>
+</html>

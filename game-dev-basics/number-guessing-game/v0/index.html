@@ -1,0 +1,33 @@
+<body></body>
+<script>
+    /* 1. Define game objective */
+    const OBJECTIVE = 'We have choose a number between 1-10. Guess it by input a number, then press "Enter".'
+
+    /* 2. Present the objective to the player */
+    document.write(OBJECTIVE)
+
+    /* 3. Define number to be guessed */
+    const NUMBER = 5
+
+    /* 4. Define an user interface for player to input a guess */
+    const INPUT_UI = document.createElement('input')
+
+    /* 5. Present input UI to player */
+    document.body.append(INPUT_UI)
+
+    /* 6. Accept player's input when the player press "Enter" key on input UI */
+    INPUT_UI.onkeydown = function (keydownEvent) {
+        // Only continue the program if pressed key is "Enter"
+        if (keydownEvent.key !== 'Enter') return
+
+        /* 7. Present a message if the input same as predefined number */
+        if (parseInt(INPUT_UI.value) === NUMBER) {
+            /* 8. Present player with a result */
+            document.write('Correct. You win!')
+            return
+        }
+
+        /* 9. Present a message if the input is not same as predefined number */
+        document.write('Wrong. You loose!')
+    }
+</script>

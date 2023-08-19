@@ -1,0 +1,22 @@
+{
+  "name": "mouse-driver",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "npx rollup --config",
+    "build-example": "npx rollup --config example/rollup.config.js"
+  },
+  "type": "module",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@lopatnov/rollup-plugin-uglify": "^2.1.5",
+    "@rollup/plugin-node-resolve": "^15.0.1",
+    "rollup": "^3.9.1",
+    "terser": "^5.16.1",
+    "window-event-proxy": "github:farishan/window-event-proxy"
+  }
+}

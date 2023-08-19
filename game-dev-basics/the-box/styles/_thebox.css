@@ -1,0 +1,43 @@
+/*------------THE BOX-------------*/
+
+.thebox{
+	margin-top: 42%;
+	width: 50px;
+	height: 50px;
+	background-color: black;
+	border-radius: 5px;
+	-webkit- transition: 1s;
+	transition: 1s;
+	position: relative;
+	overflow: hidden;
+}
+.thebox:before{
+	content: ' ';
+	letter-spacing: 1px;
+	width: 100px;
+	height: 100px;
+	background-color: white;
+	color: white;
+	line-height: 45px;
+	border-radius: 5px;
+	position: absolute;
+	display: block;
+	text-align: center;
+	margin-left: -7.10px;
+	margin-top: 50px;
+	transition: 0.5s;
+}
+.thebox:hover {
+	width: 53px;
+	height: 53px;
+	box-shadow: 0px 0px 10px black;
+}
+.thebox:hover:before{
+	margin-top: -50px;
+	color: lightgrey;
+}
+.thebox::active{
+	outline-color: rgba(0,0,0,0);
+}
+
+/*-------------------------------*/

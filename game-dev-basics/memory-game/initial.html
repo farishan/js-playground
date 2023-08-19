@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        //#region style
+        const style = document.createElement('style')
+        style.innerHTML = `
+            * {
+                box-sizing: border-box;
+            }
+            body {
+                margin: 0;
+                padding: 0;
+            }
+        `
+        document.head.appendChild(style)
+        //#endregion
+
+        /* Config */
+        const WIDTH = 800 // px
+        const HEIGHT = 600 // px
+        const HEAD_HEIGHT = 60 // px
+        const TITLE = 'JS Memory Game'
+        const TILE_SIZE = 60 // px
+
+        /* State */
+        const state = {
+            scene: 'round', // 'menu' | 'round'
+            tileMap: null
+        }
+    </script>
+    <script>
+        // event manager
+        const eventManager = {
+            listenerMap: {},
+            on: function (eventKey, callback) {
+                if (!this.listenerMap[eventKey]) this.listenerMap[eventKey] = []
+                this.listenerMap[eventKey].push(callback)
+            },
+            emit: function (eventKey, payload) {
+                if (!this.listenerMap[eventKey]) throw Error('unknown event.')
+                const listeners = this.listenerMap[eventKey]
+                listeners.forEach(listener => {
+                    listener(payload)
+                });
+            }
+        }
+    </script>
+    <script>
+        // GUI
+        const root = document.createElement('div')
+        root.style.border = '1px solid'
+        root.style.width = `${WIDTH}px`
+        root.style.height = `${HEIGHT}px`
+
+        const head = document.createElement('div')
+        head.style.borderBottom = '1px solid'
+        head.style.height = '60px'
+        head.style.padding = '20px'
+        const title = document.createElement('div')
+        title.innerHTML = TITLE
+        head.appendChild(title)
+
+        eventManager.on('change scene', function (payload) {
+            if (payload.key === 'round') {
+                head.innerHTML += 'round'
+            }
+        })
+
+        root.appendChild(head)
+
+        const body = document.createElement('div')
+        body.style.position = 'relative'
+        body.style.height = HEIGHT - HEAD_HEIGHT + 'px'
+        body.style.padding = '20px'
+
+        eventManager.on('change scene', function (payload) {
+            render(payload.key)
+        })
+        eventManager.on('tile updated', function () {
+            render(state.scene)
+        })
+
+        root.appendChild(body)
+
+        document.body.appendChild(root)
+    </script>
+    <script>
+        // game functions
+        function Entity(id) {
+            this.id = id || Math.random().toString(36).slice(2, 9)
+            return this
+        }
+
+        function Vector2(x, y) {
+            this.x = x
+            this.y = y
+            return this
+        }
+
+        function Vector2Entity(x, y) {
+            const entity = new Entity()
+            const vector2 = new Vector2(x, y)
+            this.id = entity.id
+            this.x = vector2.x
+            this.y = vector2.y
+
+            return this
+        }
+        function Vector2EntityMap(vector2Entities) {
+            const data = {}
+
+            vector2Entities.forEach(vector2Entity => {
+                data[vector2Entity.id] = vector2Entity
+            });
+
+            this.to2DArray = function (direction /*'horizontal' | 'vertical'*/) {
+                const array = []
+
+                Object.keys(data).forEach(entityKey => {
+                    const entity = data[entityKey]
+                    const x = parseInt(entity.x)
+                    const y = parseInt(entity.y)
+                    if (direction === 'horizontal') {
+                        if (!array[y]) array[y] = []
+                        array[y][x] = entity
+                    } else if (direction === 'vertical') {
+                        if (!array[x]) array[x] = []
+                        array[x][y] = entity
+                    }
+                });
+
+                return array
+            }
+
+            this.get = function () {
+                return data
+            }
+
+            return this
+        }
+
+        function Square(size) {
+            this.size = size
+
+            return this
+        }
+
+        function Flippable() {
+            this.is_flipped = false
+
+            return this
+        }
+
+        // @see https://dev.to/codebubb/how-to-shuffle-an-array-in-javascript-2ikj
+        // @see https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle
+        const shuffleArray = array => {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                const temp = array[i];
+                array[i] = array[j];
+                array[j] = temp;
+            }
+        }
+
+        const tileManager = {
+            tilesById: {},
+            createTile: function (x, y, size) {
+                const tile = {
+                    ...new Vector2Entity(x, y),
+                    ...new Square(size),
+                    ...new Flippable(),
+                }
+                this.tilesById[tile.id] = tile
+                return tile
+            },
+            update: function (tileId, updater) {
+                const tile = this.tilesById[tileId]
+                this.tilesById[tileId] = updater(tile)
+            },
+            createTileMap: function (w, h) {
+                // generate pairs
+                const tileTotal = w * h
+                const pairMap = {}
+                const pairIds = []
+                for (let index = 0; index < tileTotal / 2; index++) {
+                    const id = Math.random().toString(36).slice(2, 6)
+                    pairMap[id] = 0
+                    pairIds.push(id)
+                    pairIds.push(id)
+                }
+                shuffleArray(pairIds)
+                // console.log(pairMap, pairIds)
+
+                // generate tile map
+                const tiles = []
+
+                for (let y = 0; y < h; y++) {
+                    for (let x = 0; x < w; x++) {
+                        const tile = tileManager.createTile(x, y, TILE_SIZE)
+
+                        // assign pair to tile
+                        tile.pairId = pairIds[0]
+                        // remove assigned pair id
+                        pairIds.shift()
+
+                        tiles.push(tile)
+                    }
+                }
+
+                const tileMap = new Vector2EntityMap(tiles)
+                console.log(tileMap.get())
+                this.tilesById = tileMap.get()
+
+                // modify state
+                state.tileMap = this.tilesById
+
+                return tileMap
+            }
+        }
+
+        function createTileUI(tile) {
+            const ui = document.createElement('div')
+            ui.style.cursor = 'pointer'
+            ui.style.width = tile.size + 'px'
+            ui.style.height = tile.size + 'px'
+            ui.style.border = '1px solid'
+
+            console.log(tile.is_flipped)
+            if (tile.is_flipped) {
+                ui.style.borderColor = 'red'
+            } else {
+                ui.style.borderColor = 'black'
+            }
+
+            ui.onclick = function () {
+                console.log(tile, tile.pairId)
+                tileManager.update(tile.id, (oldTileData) => {
+                    const newTileData = { ...oldTileData, is_flipped: !tile.is_flipped }
+                    return newTileData
+                })
+
+                // trigger rerender
+                eventManager.emit('tile updated')
+            }
+
+            return ui
+        }
+
+
+
+        function createTileMapUI(tileMap) {
+            const rows = tileMap.to2DArray('horizontal')
+            const ui = document.createElement('div')
+
+            rows.forEach(tileColumns => {
+                const rowUI = document.createElement('div')
+                rowUI.style.display = 'flex'
+
+                tileColumns.forEach(tile => {
+                    rowUI.appendChild(createTileUI(tile))
+                });
+
+                ui.appendChild(rowUI)
+            });
+
+            return ui
+        }
+
+        function render(sceneKey) {
+            const self = this
+            body.innerHTML = ''
+            let scene = document.createElement('div')
+
+            if (sceneKey === 'menu') {
+                scene.innerHTML = 'menu'
+                const mainMenu = document.createElement('div')
+                mainMenu.style.position = 'absolute'
+                mainMenu.style.left = 0
+                mainMenu.style.top = 0
+                mainMenu.style.display = 'flex'
+                mainMenu.style.alignItems = 'center'
+                mainMenu.style.justifyContent = 'center'
+                mainMenu.style.width = '100%'
+                mainMenu.style.height = '100%'
+                const playButton = document.createElement('button')
+                playButton.innerHTML = 'Play'
+                playButton.onclick = function () {
+                    scene = 'round'
+                    render(scene)
+                    eventManager.emit('change scene', { key: scene })
+                }
+                mainMenu.appendChild(playButton)
+                scene = mainMenu
+            } else if (sceneKey === 'round') {
+                scene.appendChild(createTileMapUI(state.tileMap))
+            } else {
+                scene.innerHTML = 'unknown scene key.'
+            }
+
+            body.appendChild(scene)
+
+            return scene
+        }
+
+        // init
+        state.tileMap = tileManager.createTileMap(2, 2)
+        console.log(state.tileMap)
+        eventManager.emit('change scene', { key: state.scene })
+
+        // @todo split the game core with scene-things
+    </script>
+</body>
+
+</html>

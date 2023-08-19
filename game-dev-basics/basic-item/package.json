@@ -1,0 +1,22 @@
+{
+  "name": "@farishan/basic-item",
+  "version": "0.0.1",
+  "description": "Basic JS item template",
+  "main": "index.js",
+  "directories": {
+    "example": "example"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "npx uglifyjs index.js -o dist/item.js && npx uglifyjs index.js -c -o dist/item.min.js"
+  },
+  "keywords": [
+    "javascript"
+  ],
+  "author": "Faris Han",
+  "license": "ISC",
+  "dependencies": {
+    "@farishan/player": "^0.1.1",
+    "@farishan/script-loader": "^0.1.1"
+  }
+}

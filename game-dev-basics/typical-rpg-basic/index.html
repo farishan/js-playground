@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Basic Character & Battle System</title>
+  <link rel="stylesheet" href="./main.css">
+</head>
+
+<body>
+  <div id="app">
+    <h1>Basic Character & Battle System</h1>
+
+    <div class="layout">
+      <section class="layout-item">
+        <p>This is a basic implementation of typical RPG character and battle system.</p>
+        <p>Character class:</p>
+        <pre>
+          <code>
+            function Character(data){
+              this.name = data.name;
+              this.hp = data.hp;
+              this.max_hp = data.hp;
+              this.dmg = data.dmg;
+              this.exp = data.exp;
+              this.attack = function(target){
+                target.hp -= this.dmg;
+              }
+
+              return this;
+            }
+          </code>
+        </pre>
+
+        <p>Usage:</p>
+        <pre>
+          <code lang="javascript">
+            // entity creation
+            var attacker = new Character({
+              name: 'Entity A',
+              hp: 10,
+              dmg: 1,
+              exp: 10
+            });
+
+            var defender = new Character({
+              name: 'Entity B',
+              hp: 10,
+              dmg: 1,
+              exp: 10
+            });
+
+            // battle
+            attacker.attack(defender);
+            defender.attack(attacker);
+
+            // reset
+            attacker.hp = attacker.max_hp;
+            defender.hp = defender.max_hp;
+          </code>
+        </pre>
+      </section>
+
+      <section class="layout-item">
+        <div class="box" style="margin-bottom: 1rem">
+          <h3 style="margin-top: 0">Player Editor</h3>
+          <table>
+            <tbody>
+              <tr>
+                <td>
+                  <label style="display: block">Name</label>
+                  <input type="text" v-model="player.name" style="margin-bottom: 4px; width: 100%">
+                </td>
+                <td>
+                  <label style="display: block">HP</label>
+                  <input type="num" v-model="player.hp" style="margin-bottom: 4px; width: 100%">
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <label style="display: block">Damage</label>
+                  <input type="num" v-model="player.dmg" style="margin-bottom: 4px; width: 100%">
+                </td>
+                <td>
+                  <label style="display: block">Exp</label>
+                  <input type="num" v-model="player.exp" style="margin-bottom: 4px; width: 100%">
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div style="margin-top: 1rem">
+            <button @click="battle">start battle</button>
+          </div>
+        </div>
+
+        <div class="box">
+          <h3 style="margin-top: 0">Battle Arena</h3>
+          <h1>{{message}}</h1>
+          <table>
+            <tbody>
+              <tr>
+                <td>Name</td>
+                <td>{{player.name}}</td>
+              </tr>
+              <tr>
+                <td>HP</td>
+                <td>{{player.hp}}</td>
+              </tr>
+              <tr>
+                <td>Damage</td>
+                <td>{{player.dmg}}</td>
+              </tr>
+              <tr>
+                <td>Exp</td>
+                <td>{{player.exp}}</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <br>
+
+          <table>
+            <tbody>
+              <tr>
+                <td>Name</td>
+                <td>{{enemy.name}}</td>
+              </tr>
+              <tr>
+                <td>HP</td>
+                <td>{{enemy.hp}}</td>
+              </tr>
+              <tr>
+                <td>Damage</td>
+                <td>{{enemy.dmg}}</td>
+              </tr>
+              <tr>
+                <td>Exp</td>
+                <td>{{enemy.exp}}</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div style="margin-top: 1rem">
+            <button @click="reset">reset</button>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <script src="vue.js"></script>
+  <script src="main.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      box-sizing: border-box;
+    }
+    canvas {
+      box-sizing: border-box;
+      background: #ddd;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+    }
+  </style>
+</head>
+
+<body>
+  <canvas id="canvas"></canvas>
+  <script>
+    const KEY_CODE = {
+      87: {
+        name: 'w',
+        direction: 'up'
+      },
+      65: {
+        name: 'a',
+        direction: 'left'
+      },
+      83: {
+        name: 's',
+        direction: 'down'
+      },
+      68: {
+        name: 'd',
+        direction: 'right'
+      }
+    }
+
+    const KEY_UP = 87
+    const KEY_DOWN = 83
+    const KEY_RIGHT = 68
+    const KEY_LEFT = 65
+
+    var canvas = document.getElementById("canvas"),
+      ctx = canvas.getContext("2d");
+
+    canvas.width = 800;
+    canvas.height = 600;
+
+    var character = {
+      width: 5,
+      height: 5
+    }
+
+    var x = canvas.width/2,
+      y = canvas.height/2,
+      velY = 0,
+      velX = 0,
+      speed = 2,
+      friction = 0.98,
+      keys = [];
+
+    function update() {
+      requestAnimationFrame(update);
+
+      if (keys[KEY_UP]) {
+        if (velY > -speed) {
+          velY--;
+        }
+      }
+
+      if (keys[KEY_DOWN]) {
+        if (velY < speed) {
+          velY++;
+        }
+      }
+      if (keys[KEY_RIGHT]) {
+        if (velX < speed) {
+          velX++;
+        }
+      }
+      if (keys[KEY_LEFT]) {
+        if (velX > -speed) {
+          velX--;
+        }
+      }
+
+      velY *= friction;
+      y += velY;
+      velX *= friction;
+      x += velX;
+
+      if (x >= canvas.width-character.width) {
+        x = canvas.width-character.width;
+      } else if (x <= character.width) {
+        x = character.width;
+      }
+
+      if (y > canvas.height-character.height) {
+        y = canvas.height-character.height;
+      } else if (y <= character.height) {
+        y = character.height;
+      }
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.beginPath();
+      ctx.arc(x, y, character.width, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    update();
+
+    document.body.addEventListener("keydown", function (e) {
+      keys[e.keyCode] = true;
+    });
+    document.body.addEventListener("keyup", function (e) {
+      keys[e.keyCode] = false;
+    });
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        //#region style
+        const style = document.createElement('style')
+        style.innerHTML = `
+            * {
+                box-sizing: border-box;
+            }
+            body {
+                margin: 0;
+                padding: 0;
+            }
+        `
+        document.head.appendChild(style)
+        //#endregion
+
+        /* Fixed-area Spawning */
+        const TILEMAP_UI_WIDTH = 300
+        const TILEMAP_HEIGHT = 300
+        const PAIR_COUNT = 2
+
+        const tileWidth = TILEMAP_UI_WIDTH / PAIR_COUNT
+        const tileHeight = TILEMAP_HEIGHT / PAIR_COUNT
+
+        console.log(tileWidth, tileHeight)
+
+        // render tile area
+        const tileAreaUI = document.createElement('div')
+        tileAreaUI.style.border = '1px solid'
+        tileAreaUI.style.width = TILEMAP_UI_WIDTH+'px'
+        tileAreaUI.style.height = TILEMAP_HEIGHT+'px'
+        document.body.appendChild(tileAreaUI)
+    </script>
+</body>
+</html>

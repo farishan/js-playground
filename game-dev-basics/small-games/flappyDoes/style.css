@@ -1,0 +1,26 @@
+body{
+	text-align: center;
+}
+img{
+	width: 100%;
+}
+#slogan{
+	margin: 0px;
+	border: 2px solid black;
+}
+
+button{
+	font-family: 'Bahiana', cursive;
+	background-color: black;
+	color: grey;
+	font-size: 50px;
+}
+
+button:hover{
+	background-color: white;
+	color: black;
+}
+p{
+	font-family: 'Bahiana', cursive;
+	font-size: 30px;
+}

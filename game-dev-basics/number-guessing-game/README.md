@@ -1,0 +1,1 @@
+v0: simplest possible with more concrete solutions

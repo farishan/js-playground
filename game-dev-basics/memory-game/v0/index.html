@@ -1,0 +1,120 @@
+<body></body>
+<script>
+    const gameUIRoot = document.createElement('div')
+    const cardValues = ['rock', 'paper', 'scissor']
+
+    let cards = []
+    let selectedCardIds = []
+    let pairedCardIds = []
+
+    function generateCards() {
+        let cards = []
+        // double the card values to create a pairset
+        let pairValues = [...cardValues, ...cardValues]
+
+        pairValues.forEach(value => {
+            cards.push(new Card(value))
+        })
+
+        return cards
+    }
+
+    function onCardClick(card) {
+        const isSelected = selectedCardIds.indexOf(card.id) > -1
+        const isPaired = pairedCardIds.indexOf(card.id) > -1
+
+        /* ignore click if:
+            - card is already selected or paired, or
+            - selected card storage is full
+        */
+        if (isSelected || isPaired) return
+        if (selectedCardIds.length > 1) return
+
+        selectedCardIds.push(card.id)
+
+        if (selectedCardIds.length > 1) {
+            const card1 = cards.find(c => c.id === selectedCardIds[0])
+            const card2 = cards.find(c => c.id === selectedCardIds[1])
+
+            const isMatched = card1.value === card2.value
+
+            setTimeout(function () {
+                if (isMatched) {
+                    pairedCardIds.push(selectedCardIds[0])
+                    pairedCardIds.push(selectedCardIds[1])
+                }
+
+                selectedCardIds = []
+                renderCards()
+            }, 1000)
+        }
+
+        renderCards()
+    }
+
+    function getCardUI(card) {
+        const isSelected = selectedCardIds.indexOf(card.id) > -1
+        const isPaired = pairedCardIds.indexOf(card.id) > -1
+
+        const cardUI = document.createElement('div')
+        cardUI.style.border = '1px solid'
+        cardUI.style.padding = '1rem'
+
+        // dynamic style
+        if (isPaired) {
+            cardUI.style.color = 'green'
+        } else if (isSelected) {
+            cardUI.style.color = 'blue'
+        } else {
+            cardUI.style.cursor = 'pointer'
+        }
+
+        // card content
+        if (isPaired || isSelected) {
+            cardUI.innerHTML = card.id + ' ' + card.value
+        } else {
+            cardUI.innerHTML = card.id + ' [click to reveal value]'
+        }
+
+        // interaction
+        cardUI.onclick = function () {
+            onCardClick(card)
+        }
+
+        return cardUI
+    }
+
+    function renderCards() {
+        // reset game ui root
+        gameUIRoot.innerHTML = ''
+
+        cards.forEach(card => {
+            gameUIRoot.appendChild(getCardUI(card))
+        });
+    }
+
+    cards = shuffleArray(generateCards())
+    renderCards()
+    document.body.appendChild(gameUIRoot)
+
+    /* === Template === */
+    function Card(value) {
+        this.id = Math.random().toString(36).slice(2, 9)
+        this.value = value
+
+        return this
+    }
+
+    /* === Helpers === */
+    // @see https://dev.to/codebubb/how-to-shuffle-an-array-in-javascript-2ikj
+    // @see https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle
+    function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            const temp = array[i];
+            array[i] = array[j];
+            array[j] = temp;
+        }
+        return array
+    }
+</script>

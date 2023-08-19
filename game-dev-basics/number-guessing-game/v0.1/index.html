@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Number Guessing Game</title>
+</head>
+
+<body>
+    <script>
+        const game = {
+            config: {
+                min: 1,
+                max: 9
+            },
+            state: {
+                canSubmit: false
+            },
+
+            showInstruction: function (guiRoot) {
+                const self = this
+                const title = document.createElement('h1')
+                title.innerHTML = 'Number Guessing Game'
+                guiRoot.appendChild(title)
+
+                const instruction = document.createElement('p')
+                instruction.innerHTML = `We have choose a number between ${self.config.min}-${self.config.max}. Let's see if you can guess it.`
+                guiRoot.appendChild(instruction)
+            },
+
+            onGuess: function (guessedNumber, guiRoot) {
+                const self = this
+                if (!self.state.canSubmit) return
+                const randomNumber = Math.floor(Math.random() * self.config.max) + self.config.min
+                const resultText = document.createElement('div')
+
+                resultText.innerHTML = `Our number: ${randomNumber}<br>
+                    Your guess: ${guessedNumber}<br>`
+
+                if (parseInt(guessedNumber) === randomNumber) {
+                    resultText.innerHTML += 'You won!<br>'
+                    resultText.style.color = 'green'
+                } else {
+                    resultText.innerHTML += 'You lost!<br>'
+                    resultText.style.color = 'red'
+                }
+
+                const restartButton = document.createElement('button')
+                restartButton.innerHTML = 'Start New Round'
+                restartButton.onclick = function () {
+                    self.startRound(guiRoot)
+                }
+                resultText.appendChild(restartButton)
+                guiRoot.appendChild(resultText)
+
+                self.state.canSubmit = false
+            },
+
+            showInput: function (guiRoot) {
+                const self = this
+                const inputContainer = document.createElement('div')
+                inputContainer.innerHTML = 'Enter a guess: '
+
+                const input = document.createElement('input')
+                input.autofocus = true
+                input.placeholder = `${self.config.min} - ${self.config.max}`
+                input.onkeydown = function (e) {
+                    if (e.key === 'Enter') {
+                        self.onGuess(parseInt(input.value), guiRoot)
+                    }
+                }
+                inputContainer.appendChild(input)
+
+                const submitButton = document.createElement('button')
+                submitButton.innerHTML = 'Submit'
+                submitButton.onclick = function () {
+                    self.onGuess(parseInt(input.value), guiRoot)
+                }
+                inputContainer.appendChild(submitButton)
+
+                guiRoot.appendChild(inputContainer)
+            },
+
+            startRound: function (guiRoot) {
+                this.state.canSubmit = true
+                guiRoot.innerHTML = ''
+                this.showInstruction(guiRoot)
+                this.showInput(guiRoot)
+            },
+
+            start: function () {
+                const guiRoot = document.createElement('div')
+
+                this.startRound(guiRoot)
+
+                document.body.appendChild(guiRoot)
+            }
+        }
+
+        game.start()
+    </script>
+</body>
+
+</html>

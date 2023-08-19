@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Roll-A-Story</title>
+	<style>
+		body{
+			font-family: sans-serif;
+			font-size: 0.9em;
+		}
+		button{
+			min-width: 100px;
+
+		}
+		i{
+			font-size: 0.8em;
+		}
+		.container{
+			width: 300px;
+			height: 400px;
+			margin:auto;
+			margin-top: 100px;
+			background-color: #eee;
+			padding: 30px;
+		}
+		.boxed{
+			border: 1px solid grey;
+			padding: 3px;
+		}
+		#output{
+			display: none;
+		}
+	</style>
+</head>
+<body>
+
+	<div class="container">
+		<h1>Roll-A-Story</h1>
+		<i>roll the dice 3 times.</i>
+		<p>
+			<button id="b1">first roll</button> : <span class="boxed" id="n1"></span><br>
+		</p>
+		<p>
+			<button id="b2">second roll</button> : <span class="boxed" id="n2"></span><br>
+		</p>
+		<p>
+			<button id="b3">third roll</button> : <span class="boxed" id="n3"></span><br>
+		</p>
+		<hr>
+		<div id="output">
+			<i>your story today: </i><br>
+			<h3>" A story about <span id="subject">_</span> <span id="predicate">_</span> <span id="info">_</span>"</h3>
+			<button id="reload">Nope, i want another one.</button>
+		</div>
+	</div>
+
+	<script>
+
+		var characters = [
+			"a Brown Tailball",
+			"a Dark Wiggler",
+			"a Handy Troll",
+			"a Lazy Lady",
+			"a Banana Child",
+			"a Russian Cowboy"
+		];
+
+		var settings = [
+			"in the mall",
+			"on a pirate's ship",
+			"in your brain",
+			"in a perfect beach",
+			"on the road",
+			"in a dark room"
+		];
+
+		var problems = [
+			"searching for golden egg.",
+			"planting a bomb.",
+			"fighting a dragon.",
+			"raising a child.",
+			"burying some corpses",
+			"doing a meditation."
+		];
+		
+		var roll1 = document.getElementById('b1');
+		var roll2 = document.getElementById('b2');
+		var roll3 = document.getElementById('b3');
+
+		var n1 = document.getElementById('n1');
+		var n2 = document.getElementById('n2');
+		var n3 = document.getElementById('n3');
+
+		var s = document.getElementById('subject');
+		var p = document.getElementById('predicate');
+		var i = document.getElementById('info');
+
+
+		diceRoll(roll1, n1);
+		diceRoll(roll2, n2);
+		diceRoll(roll3, n3);
+
+		document.getElementById('reload').addEventListener('click', function(){
+			window.location.reload();
+		})
+
+		function diceRoll(trig, container){
+			trig.addEventListener('click', function(){
+				var n = Math.floor(Math.random()*6) + 1;
+				container.innerHTML = n;
+
+				if(trig == roll1){
+					s.innerHTML = characters[n-1];
+				}else if(trig == roll2){
+					p.innerHTML = settings[n-1];
+				}else if(trig == roll3){
+					i.innerHTML = problems[n-1];
+				}else{
+					alert('too much');
+				}
+
+				trig.disabled = true;
+				if(roll1.disabled == true && roll2.disabled == true && roll3.disabled == true){
+					document.getElementById('output').style.display = 'block';
+				}
+			});
+		}
+
+
+	</script>
+	
+</body>
+</html>

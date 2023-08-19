@@ -1,0 +1,87 @@
+@import 'login.css';
+@import '_thebox.css';
+@import '_achievement.css';
+@import '_help.css';
+
+body{
+	font-family: sans-serif;
+}
+.alert{
+	display: none;
+	position: fixed;
+	left: 0;
+	top: 0;
+	background-color: red;
+	text-align: center;
+}
+.title{transition: 0.3s;}
+.title:hover{color: gold;}
+
+.btn-hide{color:lightgrey; border: 0px; margin-top: 2px;}
+.btn-hide:hover{color:white; }
+
+.btn{transition: 0.3s;}
+.btnabuabu{background-color: lightgrey; color:white; border: none;}
+
+.stats{color: lightgrey;transition: 0.3s;}
+.stats:hover{color: black;}
+
+.wrapper{text-align: center;}
+.container{
+}
+.box-container {
+	-webkit- transition: 2s;
+	border-radius: 5px;
+	border:1px solid lightgrey;
+	height: 200px;
+	margin: auto;
+	text-align: center;
+	transition: 2s;
+	width: 200px;
+}
+.box-container:hover{
+	background-color: rgba(0,0,0,0.1);
+	border-color: rgba(0,0,0,0);
+}
+.box-container:active{
+	outline:none;
+	border: none;
+}
+.result{
+	background-color: white;
+	border:1px solid white;
+	height: 50px;
+	margin-top: 1%;
+}
+
+.coins{letter-spacing: 2px;}
+
+#upgradeContainer,#inventoryContainer{display: none;}
+#upgrade{
+	background-color: grey;
+	color: white;
+}
+#upgrade:hover{background-color: white;}
+
+#Glow{display:none;}
+#Transparent{display:none;}
+#Big{display: none;}
+#Small{display: none;}
+#Bubble{display: none;}
+#Red{display: none;}
+#Blue{display: none;}
+#Yellow{display: none;}
+
+.col-md-offset-3{top: 13vh;}
+.col-md-6{text-align: center; margin-top: 20px;}
+
+.footer{text-align: center;}
+
+.theme-btn{
+	position: absolute;
+	top:10px;
+	right:10px;
+}
+.theme-btn-dark{
+	right:70px;
+}

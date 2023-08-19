@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>test</title>
+</head>
+<body>
+
+<h1 id="wave"></h1>
+
+	<script type="text/javascript">
+
+	var keypress;
+	var wave = [];
+	function waveInit(){
+		for(i=0;i<10;i++){
+			var x = Math.floor((Math.random() * 4) + 1);
+			if(x==1){
+			    wave.push('w');
+			}else if(x==2){
+			    wave.push('a');
+			}else if(x==3){
+			    wave.push('s');
+			}else if(x==4){
+			    wave.push('d');
+			}
+		}
+	}
+	waveInit();
+	document.getElementById('wave').innerHTML = wave.join(' ');
+		
+	window.addEventListener('keydown',function(e){
+	    keyState[e.keyCode || e.which] = true;
+	    if (keyState[37] || keyState[65]){
+	    	keypress='a';
+	    }
+	    if (keyState[39] || keyState[68]){
+	    	keypress='d';
+	    }
+	    if (keyState[38] || keyState[87]){
+	    	keypress='w';
+	    }    
+	    if (keyState[40] || keyState[83]){
+	    	keypress='s';
+	    }
+	    if(keypress==wave[0]){
+	    	console.log('true');
+	    	console.log(wave.length)
+	    	if(wave.length==1){
+				waveInit();
+				document.getElementById('wave').innerHTML = wave.join(' ');
+	    	}else{
+		    	wave.shift();
+	    	}
+			document.getElementById('wave').innerHTML = wave.join(' ');
+	    }else{
+	    	console.log('false');
+			document.getElementById('wave').innerHTML = wave.join(' ');
+	    }
+	},true);    
+	window.addEventListener('keyup',function(e){
+	    keyState[e.keyCode || e.which] = false;
+	},true);
+	var keyState = {};
+
+	</script>
+</body>
+</html>

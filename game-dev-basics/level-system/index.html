@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Level System</title>
+	<link rel="stylesheet" href="main.css">
+</head>
+<body>
+	<div id="app">
+		<div class="header">
+			<h1>Level System</h1>
+			<button @click="reset">reset</button>
+		</div>
+
+		<div class="sections">
+			<div class="section generate">
+				<div>
+					<h3>Get Linear</h3>
+					<div>
+						<label for=""></label>diff<br>
+						<input type="num" v-model="diff">
+						<button @click="setMaxDiff">max</button>
+					</div>
+					<div>
+						<label for=""></label>length<br>
+						<input type="num" v-model="listLength">
+						<button @click="setMaxLength">max</button>
+					</div>
+					<button @click="generate">generate exp linear</button>
+				</div>
+
+				<div class="result">
+					<table>
+						<thead>
+							<tr>
+								<td>Level</td>
+								<td>Exp</td>
+							</tr>
+						</thead>
+						<tbody>
+							<tr v-for="(l,i) in exp_linear">
+								<td>{{l.level}}</td>
+								<td>{{l.exp}}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+
+			<div class="section">
+				<h3>Check Level by Exp</h3>
+				<div>
+					<label for="">exp</label><br>
+					<input type="num" v-model="exp">
+				</div>
+				
+				<br>
+				exp: {{exp}}
+				<br>
+				<button @click="checkLevel">check level</button>
+				<br>
+				<h4>level: {{level}}</h4>
+			</div>
+
+			<div class="section">
+				<h3>Check Exp for n Level</h3>
+				<div>
+					<label for="">level</label><br>
+					<input type="num" v-model="level">
+				</div>
+				<br>
+				exp required: {{exp}}
+				<br>
+				<button @click="checkExp">check</button>
+			</div>
+		</div>
+
+	</div>
+	
+	<script src="vue.js"></script>
+	<script src="main.js"></script>
+</body>
+</html>

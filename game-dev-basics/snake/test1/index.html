@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>tes</title>
+</head>
+<canvas></canvas>
+<script src="./LoopEngine.js"></script>
+<script>
+    /* Init GUI */
+    const canvas = document.getElementsByTagName('canvas')[0]
+    canvas.style.border = '1px solid'
+    canvas.width = 640
+    canvas.height = 360
+
+    const renderer = canvas.getContext('2d')
+
+    const COL = 16
+    const ROW = 9
+    const TILE_WIDTH = 640 / COL
+    const TILE_HEIGHT = 360 / ROW
+
+    let col = 3
+    let x = col * TILE_WIDTH
+    let row = 1
+    let y = row * TILE_HEIGHT
+    let length = 3
+    let headPositionLog = []
+    for (let index = length-1; index >= 0; index--) {
+        headPositionLog.push([col - index, row])
+    }
+    // console.log(headPositionLog)
+
+    /* right | left | up | down */
+    let direction = 'right'
+    let nextDirection = 'right'
+
+    function clear() {
+        renderer.clearRect(0, 0, canvas.width, canvas.height)
+    }
+
+    function update() {
+        // console.log('update tick')
+
+        if (
+            (direction === 'left' && nextDirection === 'right')
+            || (direction === 'right' && nextDirection === 'left')
+            || (direction === 'up' && nextDirection === 'down')
+            || (direction === 'down' && nextDirection === 'up')
+        ) {
+            nextDirection = direction
+        }
+
+        if (nextDirection === 'right') {
+            col += 1
+        }
+        else if (nextDirection === 'left') {
+            col -= 1
+        }
+        else if (nextDirection === 'up') {
+            row -= 1
+        }
+        else if (nextDirection === 'down') {
+            row += 1
+        }
+
+        x = col * TILE_WIDTH
+        y = row * TILE_HEIGHT
+
+        direction = nextDirection
+
+        headPositionLog.push([col, row])
+        headPositionLog.shift()
+        // console.log([...headPositionLog])
+    }
+
+    function render() {
+        clear()
+        headPositionLog.forEach(tile => {
+            renderer.fillRect(tile[0] * TILE_WIDTH, tile[1] * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT)
+        });
+    }
+
+    const updateEngine = new LoopEngine({ fps: 10, onTick: update })
+    const renderEngine = new LoopEngine({ fps: 60, onTick: render })
+
+    updateEngine.render(document.body)
+    renderEngine.render(document.body)
+
+    window.addEventListener('keydown', e => {
+        if (e.key === 'd' || e.key === 'ArrowRight') {
+            nextDirection = 'right'
+        }
+        else if (e.key === 'a' || e.key === 'ArrowLeft') {
+            nextDirection = 'left'
+        }
+        else if (e.key === 'w' || e.key === 'ArrowUp') {
+            nextDirection = 'up'
+        }
+        else if (e.key === 's' || e.key === 'ArrowDown') {
+            nextDirection = 'down'
+        }
+        else if (e.key === ' ') {
+            if (updateEngine.should_stop) {
+                updateEngine.start()
+            } else {
+                updateEngine.stop()
+            }
+            if (renderEngine.should_stop) {
+                renderEngine.start()
+            } else {
+                renderEngine.stop()
+            }
+        }
+    })
+
+    // update()
+    // render()
+    updateEngine.start()
+    renderEngine.start()
+    const tickButton = document.createElement('button')
+    tickButton.innerText = 'tick'
+    tickButton.onclick = function () {
+        update()
+        render()
+    }
+    document.body.append(tickButton)
+</script>
+
+</html>

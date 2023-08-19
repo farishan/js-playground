@@ -1,0 +1,35 @@
+* {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+.header {
+	text-align: center;
+}
+
+.sections {
+	display: flex;
+	justify-content: center;
+}
+
+.section {
+	border: 1px solid black;
+	margin: 1rem;
+	padding: 1rem;
+}
+
+.section.generate {
+	display: flex;
+}
+
+.section.generate .result {
+	max-height: 50vh;
+	overflow-y: scroll;
+	font-size: 0.9em;
+	padding: 0 1rem;
+}
+
+.section.generate .result table td {
+	border: 1px solid;
+}

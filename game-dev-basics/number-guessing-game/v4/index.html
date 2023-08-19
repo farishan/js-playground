@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Number Guessing Game</title>
+</head>
+
+<body>
+    <script>
+        const ui = {
+            root: document.createElement("div"),
+            createSpace: () => document.createElement('div'),
+            createTitle: () => document.createElement('h1'),
+            createButton: () => document.createElement('button'),
+            append: function(dom) {
+                this.root.append(dom)
+            },
+            render: function() {
+                document.body.appendChild(this.root)
+            }
+        }
+    </script>
+    <script>
+        const title = "Number Guessing Game"
+
+        const titleUI = ui.createTitle()
+        titleUI.innerText = title
+        ui.append(titleUI)
+
+        const settingUI = ui.createSpace()
+        const minNumber = 1
+        const maxNumber = 10
+        settingUI.innerText = 'Settings'
+        ui.append(settingUI)
+
+        const startGameButtonUI = ui.createButton()
+        startGameButtonUI.innerText = 'Start Game'
+        ui.append(startGameButtonUI)
+
+        ui.render()
+    </script>
+</body>
+
+</html>

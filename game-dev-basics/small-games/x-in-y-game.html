@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>X in Y</title>
+	<style>
+		*{
+			outline-color: gold;
+			box-sizing: border-box;
+		}
+		body{
+			margin: 0;
+			padding: 0;
+			font-family: "Lato", sans-serif;
+		}
+		ul{
+			text-align: left;
+		}
+		input{
+			padding:5px;
+		}
+		button{
+			padding: 5px;
+		}
+		/*============================================*/
+		.container{
+			background-color: #eaeaea;
+			padding:15px;
+			text-align: center;
+			margin: auto; 
+			margin-top:5%;
+			width: 40%;
+			height: 700px;
+			position: relative;
+			/*left: 50%;*/
+			/*top: 20%;*/
+			/*transform: translate(-50%, 50%);*/
+		}
+
+		/*instructions*/
+		.instructions{
+			width: 70%;
+			margin:auto;
+			text-align: left;
+			font-size: 0.7em;
+			min-height: 130px;
+			background-color: #ddd;
+			padding: 15px;
+		}
+		.instructions .controls,.instructions .howto{
+			width: 50%;
+			float: left;
+		}
+		
+		/*main area*/
+		.container form{
+			clear: both;
+			margin: 15px 0 0 0;
+		}
+		.container form span{
+			font-size: 0.7em;
+			color:#aaa;
+		}
+	
+		/*output*/
+		#result{
+			width: 70%;
+			margin:auto;
+			height: 300px;
+			overflow: scroll;
+		}
+	
+		/*custom class*/
+		#alert{
+			position: absolute;
+		}
+		.title{
+			margin: 5px 0;
+		}
+		.light-color{
+			color:#aaa;
+		}
+	</style>
+</head>
+<body>
+
+	<div class="container">
+		<div id="alert"></div>
+		<h1 class="title">"X in the Y"</h1>
+		<div class="instructions">
+			<div class="controls">
+				<i><b>controls:</b></i><br>
+				<i>Esc - focus on x field</i><br>
+				<i>Tab - focus on next field</i><br>
+				<i>Enter - combine word</i><br>
+				<i>F5 - new game</i><br>
+
+			</div>
+			<div class="howto">
+				<i><b>how noob play:</b></i><br>
+				<i>
+					click on x field (left), type a word, 
+					<br> click on y field (right), type a word again,
+					<br> click on combine button.</i><br>
+				<br>
+				<i><b>how to play like a pro:</b></i><br>
+				<i>type - tab - type - enter; <span class="light-color">repeat until you get satisfied, or get some nice ideas to execute. have a nice day!;</span></i>
+			</div>
+		</div>
+
+		<form action="">
+			<input type="text" placeholder="X" id="x_word" value="" autofocus>
+			<span>in the</span>
+			<input type="text" placeholder="Y" id="y_word" value="">
+			<button type="button" id="combine">combine</button>
+		</form>
+		<br>
+		<br>
+		<ul id="result">
+			
+		</ul>
+	</div>
+
+	
+	<script>
+		var combine = document.getElementById('combine');
+		var result = document.getElementById('result');
+		var alert = document.getElementById('alert');
+		var x = document.getElementById('x_word');
+		var y = document.getElementById('y_word');
+		var node, textnode;
+		var moves = [];
+
+		ready(function(){
+			x.addEventListener('focus', function(){
+				x.value = "";
+			})
+			y.addEventListener('focus', function(){
+				y.value = "";
+			})
+
+			document.addEventListener('keypress', function (e) {
+			    var key = e.which || e.keyCode;
+			    if (key == 13) { // 13 is enter
+			 		showValidInput();   	
+			    }
+			});
+			window.addEventListener('keyup',function(e) {
+			     if (e.keyCode == 27) { // escape key maps to keycode `27`
+			    	document.getElementById('x_word').focus();
+			    }
+			});
+
+			combine.addEventListener('click', function(){
+				showValidInput();
+			});
+			
+			setInterval(updateScroll, 500);
+		})
+
+		function showValidInput(){
+			if(x.value!=""&&y.value!=""){
+				if(moves.length==0){
+					alert.setAttribute('style', 'display:none;');
+					result.innerHTML = " ";
+			    	var data = {
+			    		"x":x.value,
+			    		"y":y.value
+			    	}
+
+			    	moves.push(data);
+					var last_move = moves.length-1;
+
+					var newmove = moves[0].x+" in the "+moves[0].y;
+					node = document.createElement('li');
+					textnode = document.createTextNode(newmove);
+					node.appendChild(textnode);
+					result.appendChild(node);
+				console.log(moves.length)
+				}
+
+				else{
+					var last_move = moves.length-1;
+					if(x.value!=moves[last_move].x && y.value!=moves[last_move].y){
+				    	alert.setAttribute('style', 'display:none;');
+						result.innerHTML = " ";
+				    	var data = {
+				    		"x":x.value,
+				    		"y":y.value
+				    	}
+				    	
+				    	moves.push(data);
+				    	console.log(moves)
+
+						for(i=0;i<moves.length;i++){
+							var newmove = moves[i].x+" in the "+moves[i].y;
+							node = document.createElement('li');
+							textnode = document.createTextNode(newmove);
+							node.appendChild(textnode);
+					    	result.appendChild(node);	
+						}
+					}else{
+						if(x.value==moves[last_move].x && y.value==moves[last_move].y){
+							alertCustom('error','don\'t cheat! you put the same value!')
+						}
+						else if(x.value==moves[last_move].x){
+							alertCustom('error','you put the same <b>x</b> value!')
+						}else if(y.value==moves[last_move].y){
+							alertCustom('error','you put the same <b>y</b> value!')
+						}else{
+							console.log('fuck you')
+						}
+					}	
+				}
+	    	}else{
+	    		alertCustom('error', 'please fill all field');
+	    	}
+	    	document.getElementById('x_word').focus();
+		}
+
+		function alertCustom(type, message){
+			if(type=='success'){
+				alert.setAttribute('style', 'background-color:lightgreen');
+				alert.innerHTML = message;
+			}
+			else if(type=='error'){
+				alert.setAttribute('style', 'background-color:pink; color:red;');
+				alert.innerHTML = message;
+			}
+		}
+		function updateScroll(){
+		    result.scrollTop = result.scrollHeight;
+		}
+		function ready(fn) {
+		  if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading"){
+		    fn();
+		  } else {
+		    document.addEventListener('DOMContentLoaded', fn);
+		  }
+		}
+	</script>
+</body>
+</html>

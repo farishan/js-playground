@@ -1,0 +1,15 @@
+.login{
+	text-align: center;
+	top: 10px;
+}
+
+.input-name{
+	height: 20px;
+	width: 100px;
+	margin: auto;
+}
+
+.submit-btn{
+	height: 20px;
+	line-height: 0px;
+}

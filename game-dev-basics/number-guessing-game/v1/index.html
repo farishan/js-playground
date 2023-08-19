@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Number Guessing Game</title>
+</head>
+
+<body>
+    <script>
+        const guiDriver = {
+            root: document.createElement('div'),
+
+            start: function () {
+                document.body.appendChild(this.root)
+            },
+            clear: function () {
+                this.root.innerHTML = ''
+            },
+            show: function (guiElement) {
+                this.root.appendChild(guiElement)
+            },
+            createTitle: function (text) {
+                const title = document.createElement('h1')
+                title.innerHTML = text
+                return title
+            },
+            createText: function (text) {
+                const textGUI = document.createElement('p')
+                textGUI.innerHTML = text
+                return textGUI
+            },
+            createButton: function (text, onclick) {
+                const button = document.createElement('button')
+                button.innerHTML = text
+                button.onclick = onclick
+                return button
+            },
+            createInput: function (label, onsubmit) {
+                const inputContainer = document.createElement('div')
+                inputContainer.innerHTML = `${label} `
+
+                const input = document.createElement('input')
+                input.placeholder = `${gameStorage.config.min} - ${gameStorage.config.max}`
+                input.onkeydown = function (e) {
+                    if (e.key === 'Enter') {
+                        onsubmit(input.value)
+                    }
+                }
+                inputContainer.appendChild(input)
+
+                const submitButton = document.createElement('button')
+                submitButton.innerHTML = 'Submit'
+                submitButton.onclick = function () {
+                    onsubmit(input.value)
+                }
+                inputContainer.appendChild(submitButton)
+                return inputContainer
+            }
+        }
+
+        const eventDriver = {
+            listenerMap: {},
+            on: function (key, fn) {
+                this.listenerMap[key] = fn
+            },
+            emit: function (key, payload) {
+                this.listenerMap[key](payload)
+            }
+        }
+
+        const gameStorage = {
+            title: 'Number Guessing Game',
+            config: {
+                min: 1,
+                max: 9
+            },
+            state: {
+                canSubmit: false
+            },
+        }
+
+        const numberGuessingApp = {
+            getRandomNumber: function () {
+                return Math.floor(Math.random() * gameStorage.config.max) + gameStorage.config.min
+            },
+            onGuess: function (guessedNumber) {
+                if (!gameStorage.state.canSubmit) return
+
+                const self = this
+
+                const randomNumber = self.getRandomNumber()
+                const isWin = parseInt(guessedNumber) === randomNumber
+                const resultText = guiDriver.createText(`Our number: ${randomNumber}<br>
+                    Your guess: ${guessedNumber}<br>${isWin ? 'You won!' : 'You lost!'}<br>`)
+
+                if (parseInt(guessedNumber) === randomNumber) {
+                    resultText.style.color = 'green'
+                } else {
+                    resultText.style.color = 'red'
+                }
+
+                const restartButton = guiDriver.createButton(
+                    'Start New Round',
+                    function () { eventDriver.emit('start_round') }
+                )
+                resultText.appendChild(restartButton)
+                guiDriver.show(resultText)
+
+                gameStorage.state.canSubmit = false
+            },
+            showInput: function () {
+                const self = this
+
+                const input = guiDriver.createInput(
+                    'Enter a guess: ',
+                    function (value) {
+                        self.onGuess(parseInt(value))
+                    }
+                )
+
+                guiDriver.show(input)
+            },
+            startRound: function () {
+                const self = this
+                gameStorage.state.canSubmit = true
+                guiDriver.clear()
+
+                guiDriver.show(guiDriver.createTitle(gameStorage.title))
+                guiDriver.show(
+                    guiDriver.createText(`We have choose a number between ${gameStorage.config.min}-${gameStorage.config.max}. Let's see if you can guess it.`)
+                )
+
+                this.showInput()
+            },
+            start: function () {
+                eventDriver.on('start_round', () => this.startRound())
+            }
+        }
+
+        const game = {
+            start: function () {
+                guiDriver.start()
+                numberGuessingApp.start()
+
+                eventDriver.emit('start_round')
+            },
+
+            execute: function (command) {
+                if (this[command]) this[command]()
+            },
+
+            on: eventDriver.on.bind(eventDriver),
+            emit: eventDriver.emit.bind(eventDriver)
+        }
+
+        game.on('game_start', () => game.execute('start'))
+
+        game.emit('game_start')
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ECS Plain</title>
+</head>
+
+<body>
+  <p>check console. <a href="./usage/index.html">usage</a></p>
+  <div id="game"></div>
+
+  <!-- HTML mod -->
+  <script>
+    window.HTMLElement.prototype.render = function (html) { this.innerHTML = html }
+    window.HTMLElement.prototype.add = window.HTMLElement.prototype.appendChild
+  </script>
+
+  <!-- Game Engine Script -->
+  <script>
+    function Entity(id) {
+      this.id = id
+    }
+
+    function Component(props) {
+      var self = this;
+      this.id = props.id
+
+      if (props.data) {
+        Object.keys(props.data).forEach(function (key) {
+          self[key] = props.data[key]
+        })
+      }
+
+      return this
+    }
+
+    function ECS() {
+      this.idCounter = 1
+      this.entityMap = {}
+      this.componentMap = {}
+      this.systemMap = {}
+    }
+
+    ECS.prototype.createEntity = function () {
+      const entity = new Entity(this.idCounter.toString())
+      this.idCounter++
+      this.entityMap[entity.id] = entity
+      return entity
+    }
+
+    ECS.prototype.createComponent = function (data) {
+      const component = new Component({
+        id: this.idCounter.toString(),
+        data
+      })
+      this.idCounter++
+      this.componentMap[component.id] = component
+      return component
+    }
+
+    ECS.prototype.addComponentToEntity = function (componentId, entityId) {
+      var entity = this.entityMap[entityId]
+      var component = this.componentMap[componentId]
+      Object.keys(component).forEach(function (key) {
+        entity[key] = component[key]
+      })
+      this.entityMap[entityId] = entity
+      return entity
+    }
+
+    ECS.prototype.createSystem = function (props) {
+      const system = Object.assign({}, props)
+      system.id = this.idCounter.toString()
+      this.idCounter++
+      this.systemMap[system.id] = system
+      return system
+    }
+
+    var ecs = new ECS()
+  </script>
+
+  <!-- Game Script -->
+  <script>
+    var game = {
+      state: {
+        shouldRun: true,
+      },
+      engine: ecs,
+      data: {
+        score: 0
+      }
+    }
+
+    function update() {
+      if (game.state.shouldRun) {
+        var systems = Object.keys(game.engine.systemMap).map(function (key) {
+          return game.engine.systemMap[key]
+        })
+
+        systems.forEach(system => {
+          if (system.run) system.run()
+        });
+
+        requestAnimationFrame(update)
+      }
+    }
+
+    update()
+
+    setTimeout(function () {
+      game.state.shouldRun = false
+      console.log(game)
+    }, 2000)
+  </script>
+
+  <!-- Game Component & System Script -->
+  <script>
+    /* Components */
+    /* components goes here... */
+
+    /* Systems */
+    /* systems goes here... */
+  </script>
+
+  <!-- Game Predefined Entities -->
+  <script>
+    /* predefined entities goes here... */
+  </script>
+
+  <!-- Game UI -->
+  <script>
+    /* UI goes here... */
+    var UI_root = document.getElementById('game');
+  </script>
+</body>
+
+</html>

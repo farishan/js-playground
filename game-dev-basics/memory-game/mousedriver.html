@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        //#region style
+        const style = document.createElement('style')
+        style.innerHTML = `
+            * {
+                box-sizing: border-box;
+            }
+            body {
+                margin: 0;
+                padding: 0;
+            }
+        `
+        document.head.appendChild(style)
+        //#endregion
+
+        const SCREEN_WIDTH = 800
+        const SCREEN_HEIGHT = 600
+
+        const root = document.createElement('div')
+        root.style.width = `${SCREEN_WIDTH}px`
+        root.style.height = `${SCREEN_HEIGHT}px`
+        root.style.border = '1px solid'
+
+        window.addEventListener('mousemove', function(e){
+            console.log(e.clientX, e.clientY)
+        })
+
+        document.body.appendChild(root)
+    </script>
+</body>
+</html>

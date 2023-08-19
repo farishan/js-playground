@@ -1,0 +1,18 @@
+.help-btn{
+	position: absolute;
+	top:10px;
+	left:10px;
+}
+
+.help-content{
+	background-color: lightgrey;
+	display: none;
+	top:55px;
+	left: 10px;
+	position: absolute;
+	border-radius: 5px;
+}
+
+.help-content li{
+	padding: 2px;
+}

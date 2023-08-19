@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Hacker</title>
+	<style>
+		*{
+			box-sizing: border-box;
+		}
+		body{
+			font-family: sans-serif;
+		}
+		ul{
+			padding:0;
+			margin:0;
+		} 
+		li{
+			list-style-type: none;
+			display: inline-block;
+		}
+		input{
+			margin: 5px 0;
+		}
+		i{
+			font-size: 0.8em;
+		}
+		a{
+			color:green;
+		}
+		.sub-menu table tr {
+			min-height: 15px;
+			border: 1px solid red;
+		}
+
+		table tr td{
+			vertical-align: top;
+			padding: 10px;
+			font-family: serif;
+		}
+
+		#alert{
+			display: none;
+			text-align: center;
+			position: absolute;
+			top: 0;
+			z-index: 99;
+			width: 100%;
+		}
+	
+		.main-menu{
+			text-align: center;
+			background-color: #000;
+			color: green;
+			height: 100%;
+			width: 100%;
+			padding-top: 100px;
+			position: absolute;
+			z-index: 1;
+
+			display: none;
+		}
+		.start-wrapper{
+			padding: 30px 0;
+			margin: 15px 0;
+			border: 1px solid green;
+		}
+		.instructions{
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			background-color: #fff;
+			z-index: 2;
+			background-color: #000;
+			color: green;
+			padding:15px;
+		}
+
+		.title{
+			text-transform: uppercase;
+			margin-bottom: 0;
+		}
+		.container{
+			position: absolute;
+			width: 800px;
+			height: 600px;
+			left: 50%;
+			top: 50%;
+			transform: translate(-50%,-50%);
+			background-color: #eee;
+		}
+		.header{
+			width: 100%;
+			height: 50px;
+			text-align: center;
+			background-color: #ddd;
+		}
+		.content{
+			padding: 15px;
+		}
+		.content .sub-menu{
+			display: none;
+		}
+
+		#c6 p{
+			max-width: 300px;
+		}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<div id="alert"></div>
+
+		<div class="main-menu" id="main_menu">
+			<i>balance: $<span id="balance">0</span></i>
+			<h1 class="title">hacker</h1>
+			<i>remake of "Hacker 2" by xlKashmir on Kongregate.com</i>
+
+			<div class="start-wrapper">
+				<label for="">Network: </label>
+				<input type="text" id="level" value="XK Servers">
+				<button id="start_game">HACK</button>
+			</div>
+
+			<a href="#" id="instructions_trigger">Instructions</a>
+		</div>
+
+		<div class="instructions" id="instructions_container" style="display: none">
+			<p>
+				Hacker is a game in which you must 'hack' each system and gain access to it. You have a main interface in which you can investigate each of your missions and work out how to hack into the sustem,a nd complete your objectives. There is a 'help' tab that may gibe you useful hints if you get stuck on a mission. you need to think logically to unlock all the steps to gain access to the system!
+				
+			</p>
+			<h5>Good Luck !</h5>
+			<i style="color:red">*this game is just a simulation</i><br><br>
+			<a href="#" id="instructions_back">back</a>
+		</div>
+
+		<div class="main-interface">
+			<div class="header">
+				<nav>
+					<ul>
+						<li><button id="b1">Email</li>
+						<li><button id="b2">Browser</li>
+						<li><button id="b3">FTP</li>
+						<li><button id="b4">Crack</li>
+						<li><button id="b5">Scan</li>
+						<li><button id="b6">Help</li>
+					</ul>
+				</nav>
+			</div>
+			<div class="content" id="content">
+
+				<div class="sub-menu" id="c1">
+					<h3>Email</h3>
+					<table>
+						<tr>
+							<td>ID</td>
+							<td>:</td>
+							<td id="mission_number"></td>
+						</tr>
+						<tr>
+							<td>Objectives</td>
+							<td>:</td>
+							<td id="mission_brief"></td>
+						</tr>
+						<tr>
+							<td>Reward</td>
+							<td>:</td>
+							<td>$<span id="mission_reward"></span></td>
+						</tr>
+					</table>
+				</div>
+
+				<div class="sub-menu" id="c2">		
+					<h3>Web Browser</h3>
+					<input type="text" id="browser_input" autofocus><button id="browser_search">go</button>
+					<div id="web_container">web container</div>
+				</div>
+
+				<div class="sub-menu" id="c3">
+					<h3>FTP</h3>
+					<input type="text" placeholder="username"><br>
+					<input type="password" placeholder="password"><br>
+					<input type="text" placeholder="FTP address"><br>
+					<button>connect</button>
+				</div>
+
+				<div class="sub-menu" id="c4">
+					<h3>Crack</h3>
+					<input type="text" placeholder="username"><br>
+					<input type="text" placeholder="web addresss"><br>
+					<button>crack</button>
+				</div>
+
+				<div class="sub-menu" id="c5">
+					<h3>Scan</h3>
+					<label for="">Scan for all open ports on this address: </label>
+					<input type="text">
+				</div>
+
+				<div class="sub-menu" id="c6">
+					<h3>Help</h3>
+					<p>To crack web addresses you need to make sure they aren't secured and that you know an available username. Don't forget to include port numbers on the addresses when cracking.</p>
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+	
+
+	<script>
+
+		var start = document.getElementById('start_game');
+		var mainmenu = document.getElementById('main_menu');
+
+		var itrig = document.getElementById('instructions_trigger');
+		var icont = document.getElementById('instructions_container');
+		var iback = document.getElementById('instructions_back');
+		
+		var email_trigger = document.getElementById('b1');
+		var browser_trigger = document.getElementById('b2');
+		var ftp_trigger = document.getElementById('b3');
+		var crack_trigger = document.getElementById('b4');
+		var scan_trigger = document.getElementById('b5');
+		var help_trigger = document.getElementById('b6');
+
+		var cont = document.getElementById('content');
+
+		var email_cont = document.getElementById('c1');
+		var browser_cont = document.getElementById('c2');
+		var ftp_cont = document.getElementById('c3');
+		var crack_cont = document.getElementById('c4');
+		var scan_cont = document.getElementById('c5');
+		var help_cont = document.getElementById('c6');
+
+		var mission_number = document.getElementById('mission_number');
+		var mission_brief = document.getElementById('mission_brief');
+		var mission_reward = document.getElementById('mission_reward');
+
+		var browser_search = document.getElementById('browser_search');
+		var web_container = document.getElementById('web_container');
+
+		var levels = [
+			{
+				'name' : 'XK Servers',
+				'web' : 'www.xkservers.web',
+				'clue' : 'algoEX',
+				'payout' : 5000,
+				'details' : 'You are trying to hack into XK Servers. They are a webhost provider that offer server hosting available at their website: www.xkservers.web. <br><br> This is all the information we can give you. We require that you find a way into their system and retrieve the secret decoder algorithms from one of their hosted servers for "algoEX".',
+				'web_content' : {
+					'header' : 'Welcome to XK Servers!',
+					'headline' : 'We provide only the best server for your company.',
+					'content' : 'xkservers content',
+					'footer' : 'footer'
+				}
+			}
+		];
+
+		//=====================================================
+
+		showSection(email_trigger, email_cont);
+		showSection(browser_trigger, browser_cont);
+		showSection(ftp_trigger, ftp_cont);
+		showSection(crack_trigger, crack_cont);
+		showSection(scan_trigger, scan_cont);
+		showSection(help_trigger, help_cont);
+
+		start.addEventListener('click', function(){
+			var selected_level = document.getElementById('level').value;
+
+			for (var i = levels.length - 1; i >= 0; i--) {
+				var level = levels[i];
+
+				if(selected_level==level.name){
+					console.log(selected_level)
+					mainmenu.style.display = 'none';
+					mission_number.innerHTML = i+1;
+					mission_brief.innerHTML = level.details;
+					mission_reward.innerHTML = level.payout;
+				}else{
+					alertCustom('red', 'mission not available', 3000);
+				}
+			}
+		});
+
+		itrig.addEventListener('click', function(){
+			icont.style.display = 'block';
+		});
+		iback.addEventListener('click', function(){
+			icont.style.display = 'none';
+		});
+
+		browser_input.addEventListener('keypress', function(e){
+			if (e.keyCode == 13) {
+		        browser_search.click();
+		        return false;
+		    }
+		})
+		browser_search.addEventListener('click', function(){
+			var browser_input = document.getElementById('browser_input').value;
+
+			for (var i = levels.length - 1; i >= 0; i--) {
+				var level = levels[i];
+				if(browser_input==level.web){
+					web_container.innerHTML = 'loading...';
+					setTimeout(function(){
+						showWebContent(200);
+					}, 1000);
+				}else{
+					web_container.innerHTML = 'loading...';
+					setTimeout(function(){
+						showWebContent(404);
+					}, 1000)
+				}
+			}
+		})
+
+		function showWebContent(code){
+			if (code==200){
+				web_container.innerHTML = 'web content goes here'
+			} 
+			else {
+				web_container.innerHTML = '404 Not Found'
+			}
+		}
+
+		function showSection(trigger, container){
+			trigger.addEventListener('click', function(){
+				for (var i = cont.children.length - 1; i >= 0; i--) {
+					cont.children[i].style.display = 'none';
+				}
+				container.style.display = 'block';
+			});
+		}
+
+		function alertCustom(color, msg, timeout){
+			document.getElementById('alert').innerHTML = msg;
+			if(color=='green'){
+				document.getElementById('alert').setAttribute('style', 'background-color:green; color:white; display:block;');
+			}
+			else if(color=='yellow'){
+				document.getElementById('alert').setAttribute('style', 'background-color:lightyellow; color:brown; display:block;');
+			}
+			else if(color=='red'){
+				document.getElementById('alert').setAttribute('style', 'background-color:red; color:black; display:block;');
+			}
+			else{
+				alert(msg);
+			}
+
+			if(timeout==0){
+				document.getElementById('alert').style.display = 'block';
+			}else{
+				setTimeout(function(){
+					document.getElementById('alert').style.display = 'none';
+				}, timeout);
+			}
+		}
+
+	</script>
+</body>
+</html>

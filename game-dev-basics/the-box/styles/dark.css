@@ -1,0 +1,80 @@
+@import 'login.css';
+@import '_thebox.css';
+@import '_achievement.css';
+@import '_help.css';
+
+body{
+	font-family: sans-serif;
+	background-color: black;
+}
+.title{transition: 0.3s; color:white;}
+.title:hover{color: purple;}
+
+.btn-hide{color:lightgrey; border: 0px; margin-top: 2px;}
+.btn-hide:hover{color:white; }
+
+.btn{transition: 0.3s; background-color: grey; color:lightgrey;}
+.btnabuabu{background-color: lightgrey; color:black; border: none;}
+
+.stats{color: darkgrey;transition: 0.3s;}
+.stats:hover{color: white;}
+
+.wrapper{text-align: center;}
+.container{
+	width: 200px;
+	height: 200px;
+	border:1px solid grey;
+	text-align: center;
+	border-radius: 5px;
+	-webkit- transition: 2s;
+	transition: 2s;
+	margin: auto;
+}
+.container:hover{
+	background-color: rgba(255,255,255,0.1);
+	border-color: rgba(255,255,255,0);
+}
+
+.result{
+	margin-top: 1%;
+	height: 50px;
+	
+	background-color: black;
+	color:white;
+}
+
+.coins{letter-spacing: 2px;}
+
+#upgradeContainer,#inventoryContainer{display: none;}
+#upgrade{
+	background-color: grey;
+	color: white;
+}
+#upgrade:hover{background-color: white;}
+
+#Glow{display:none;}
+#Transparent{display:none;}
+#Big{display: none;}
+#Small{display: none;}
+#Bubble{display: none;}
+#Red{display: none;}
+#Blue{display: none;}
+#Yellow{display: none;}
+
+.col-md-offset-3{top: 13vh;}
+.col-md-6{text-align: center; margin-top: 20px;}
+
+.footer{text-align: center;}
+
+.instruction{color: grey; transition: 0.3s}
+.instruction:hover{color: white;}
+
+.theme-btn{
+	position: absolute;
+	top:10px;
+	right:10px;
+}
+.theme-btn-dark{
+	right:70px;
+}
+

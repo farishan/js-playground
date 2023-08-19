@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // @see https://dev.to/codebubb/how-to-shuffle-an-array-in-javascript-2ikj
+        // @see https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle
+        const shuffleArray = array => {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                const temp = array[i];
+                array[i] = array[j];
+                array[j] = temp;
+            }
+            return array
+        }
+
+        function Entity(id) {
+            this.id = id || Math.random().toString(36).slice(2, 9)
+            return this
+        }
+
+        function Card(value) {
+            const entity = new Entity()
+            this.id = entity.id
+
+            this.value = value
+
+            return this
+        }
+    </script>
+    <script>
+        // generate rock-paper-scissor card deck
+        const deck = {
+            cards: [],
+            cardMap: {},
+            valueOptions: ['rock', 'paper', 'scissor'],
+            getDoubledValueOptions: function () {
+                return [...this.valueOptions, ...this.valueOptions]
+            },
+            shuffle: function () {
+                this.cards = shuffleArray(this.cards)
+
+                return this
+            },
+            generateCards: function (isDoubled) {
+                const self = this
+                if (isDoubled) {
+                    const doubledValues = this.getDoubledValueOptions()
+                    doubledValues.forEach(v => {
+                        const card = new Card(v)
+                        self.cards.push(card)
+                        self.cardMap[card.id] = card
+                    })
+                } else {
+                    self.valueOptions.forEach(v => {
+                        const card = new Card(v)
+                        self.cards.push(card)
+                        self.cardMap[card.id] = card
+                    })
+                }
+
+                return this
+            },
+            getCard: function (id) {
+                return this.cardMap[id]
+            }
+        }
+    </script>
+    <script>
+        deck.generateCards(true).shuffle()
+
+        function checkPair(card1, card2) {
+            console.log('check pair', card1.value, card2.value)
+            return card1.value === card2.value
+        }
+
+        const selectedCardIds = []
+        let pairedCardIds = []
+
+        function renderDeck() {
+            document.body.innerHTML = ''
+
+            // render card UI
+            deck.cards.forEach(card => {
+                const cardUI = document.createElement('div')
+                cardUI.style.border = '1px solid'
+                cardUI.style.padding = '1rem'
+
+                if (pairedCardIds.indexOf(card.id) > -1) {
+                    cardUI.style.color = 'green'
+                }
+                else if (selectedCardIds.indexOf(card.id) > -1) {
+                    cardUI.style.color = 'blue'
+                } else {
+                    cardUI.style.cursor = 'pointer'
+                }
+
+                if (pairedCardIds.indexOf(card.id) > -1 || selectedCardIds.indexOf(card.id) > -1) {
+                    cardUI.innerHTML = card.id + ' ' + card.value
+                } else {
+                    cardUI.innerHTML = card.id + ' ?'
+                }
+
+                cardUI.onclick = function () {
+                    if (selectedCardIds.indexOf(card.id) > -1 || pairedCardIds.indexOf(card.id) > -1) return
+                    if (selectedCardIds.length > 1) return
+
+                    selectedCardIds.push(card.id)
+
+                    if (selectedCardIds.length === 2) {
+                        console.log('processing...', selectedCardIds[0], selectedCardIds[1])
+                        const isMatched = checkPair(deck.getCard(selectedCardIds[0]), deck.getCard(selectedCardIds[1]))
+                        console.log(isMatched)
+
+
+                        setTimeout(function () {
+                            if (isMatched) {
+                                pairedCardIds.push(selectedCardIds[0])
+                                pairedCardIds.push(selectedCardIds[1])
+                            }
+
+                            console.log({ selectedCardIds, pairedCardIds })
+
+                            selectedCardIds.shift()
+                            selectedCardIds.shift()
+                            renderDeck()
+                        }, 1000)
+                    }
+
+                    renderDeck()
+                }
+
+                document.body.appendChild(cardUI)
+            });
+        }
+
+        renderDeck()
+    </script>
+</body>
+
+</html>

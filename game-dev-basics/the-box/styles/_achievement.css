@@ -1,0 +1,12 @@
+#thousand{display: none;color:gold;}
+#thirties{display: none;color:gold;}
+#hundred{display: none;color:gold;}
+
+.achievement{
+	transition: 0.3s;
+	border-radius: 5px;
+}
+
+.achievement:hover{
+	background-color: black;
+}
