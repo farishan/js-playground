@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Noise</title>
+</head>
+
+<body>
+  <script>
+    const c = document.createElement('canvas')
+    c.style.border = '1px solid'
+    c.style.background = '#eee'
+    const ctx = c.getContext('2d')
+
+    const COLUMN_COUNT = 16
+    const ROW_COUNT = 9
+
+    const columnSize = c.width / COLUMN_COUNT
+    const rowSize = c.height / ROW_COUNT
+
+    for (let row = 0; row < ROW_COUNT; row++) {
+      for (let column = 0; column < COLUMN_COUNT; column++) {
+        ctx.fillStyle = `rgb(0,0,0, ${Math.floor(Math.random() * 2)})`
+        ctx.fillRect(columnSize * column, rowSize * row, columnSize, rowSize)
+      }
+    }
+
+    document.body.append(c)
+
+    const display = document.createElement('div')
+    const noisedDisplay = document.createElement('div')
+
+    const LENGTH = 10;
+    const whiteNoisedArray = [];
+    const valueNoisedArray = [];
+
+    function interpolate(firstNumber, secondNumber) {
+      console.log('interpolate', firstNumber, secondNumber)
+      const distance = secondNumber - firstNumber
+      const percentage = 0.5 // always right in the middle
+      console.log('interpolateresult:', firstNumber + (percentage * distance))
+      return firstNumber + (percentage * distance)
+    }
+
+    for (let index = 0; index < LENGTH; index++) {
+      whiteNoisedArray[index] = Math.random()
+      const progress = document.createElement('progress')
+      progress.style.display = 'block'
+      progress.value = whiteNoisedArray[index]
+      display.append(progress)
+    }
+
+    // noising
+    for (let index = 0; index < whiteNoisedArray.length; index++) {
+      const randomNumber = whiteNoisedArray[index];
+
+      console.log(index)
+
+      if (index + 1 < whiteNoisedArray.length) {
+        const nextRandomNumber = whiteNoisedArray[index+1];
+
+        valueNoisedArray[index*2] = randomNumber
+        valueNoisedArray[index*2+1] = interpolate(randomNumber, nextRandomNumber)
+
+        const progress = document.createElement('progress')
+        const progress1 = document.createElement('progress')
+        progress.style.display = 'block'
+        progress1.style.display = 'block'
+        progress.value = valueNoisedArray[index*2]
+        progress1.value = valueNoisedArray[index*2+1]
+        noisedDisplay.append(progress)
+        noisedDisplay.append(progress1)
+      } else {
+        valueNoisedArray[index*2] = randomNumber
+
+        const progress = document.createElement('progress')
+        progress.style.display = 'block'
+        progress.value = valueNoisedArray[index*2]
+        noisedDisplay.append(progress)
+      }
+    }
+
+    document.body.append(display)
+    document.body.innerHTML += `<hr>`
+    document.body.append(noisedDisplay)
+
+    console.log({whiteNoisedArray, valueNoisedArray});
+  </script>
+</body>
+
+</html>
